@@ -1,5 +1,5 @@
 ---
-title: "Preliminary project decription"
+title: "Preliminary project description"
 subtitle: "Group 3 - R in Bio Data Science"
 author: 
   - Angeliki Kallia Spentza -s212881
