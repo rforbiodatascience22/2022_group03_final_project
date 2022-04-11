@@ -1,0 +1,22 @@
+
+Raw Data i ------------------------------------------------------
+
+From the study:
+Walsh AM, Wechalekar MD, Guo Y, Yin X et al. Triple DMARD 
+treatment in early rheumatoid arthritis modulates synovial T cell
+activation and plasmablast/plasma cell differentiation pathways.
+PLoS One 2017;12(9):e0183928. PMID: 28863153
+
+
+Treatment group:
+
+Healthy subjects (n = 28) were defined as those who had no evidence of any
+form of arthritis on history or examination and had no cartilage
+damage or synovitis on knee arthroscopy.
+
+Patients with early RA (defined as within 12 months of onset of 
+symptoms) (n = 19) had biopsies taken at baseline and after 6 months of 
+treatment with tDMARDs administered per a treat-to-target protocol.
+Patients did fulfill the 1987 revised American College of 
+Rheumatology (ACR) and/or the 2010 ACR/ European League Against 
+Rheumatism (EULAR) criteria. 
