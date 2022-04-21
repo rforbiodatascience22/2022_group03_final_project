@@ -14,9 +14,9 @@ source(file = "R/99_project_functions.R")
 
 # Load data ---------------------------------------------------------------
 large_raw <- read_tsv(file = "./data/01_large_count.tsv")
-treatment_raw <- read_tsv(file = "./data/02_treatment_count.tsv")
-large_meta_raw <- read_tsv(file = "data/03_large_meta.tsv")
-treatment_meta_raw <- read_tsv(file = "data/04_treatment_meta.tsv")
+treatment_raw <- read_tsv(file = "./data/01_treatment_count.tsv")
+large_meta_raw <- read_tsv(file = "data/01_large_meta.tsv")
+treatment_meta_raw <- read_tsv(file = "data/01_treatment_meta.tsv")
 
 # Wrangle data ------------------------------------------------------------
 
@@ -84,7 +84,7 @@ treatment_w_meta <- right_join(treatment_meta, treatment, by = "id")
 
 # Write data --------------------------------------------------------------
 write_tsv(x = large_w_meta,
-          file = "data/05_large_w_meta_clean.tsv")
+          file = "data/02_large_w_meta_clean.tsv")
 
 write_tsv(x = treatment_w_meta,
-          file = "data/06_treatment_w_meta_clean.tsv")
+          file = "data/02_treatment_w_meta_clean.tsv")

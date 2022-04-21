@@ -39,8 +39,8 @@ metadata_treatment_raw <- read_tsv(
 write_tsv(x = genecount_large_raw,
           file = "data/01_large_count.tsv")
 write_tsv(x = genecount_treatment_raw,
-          file = "data/02_treatment_count.tsv")
+          file = "data/01_treatment_count.tsv")
 write_tsv(x = metadata_large_raw,
-          file = "data/03_large_meta.tsv")
+          file = "data/01_large_meta.tsv")
 write_tsv(x = metadata_treatment_raw,
-          file = "data/04_treatment_meta.tsv")
+          file = "data/01_treatment_meta.tsv")
