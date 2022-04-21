@@ -132,32 +132,3 @@ female_pca_fit %>%
 
 
 
-HEATMAP
-
-```{r}
-id = treatment$id
-id = id[seq(1, length(id), 2)]
-treatment_changes <- tibble(id)
-str_sub(treatment_changes$id, 4, 8) <- ""
-
-treatment_wider <- treatment_w_meta %>% 
-  pivot_wider(names_from = 'treatment', values_from = 'AB074162')
-
-
-
-log2(fc)
-
-treatment_changes$id <- 'RA' + treatment$id
-
-treatment_w_meta %>% 
-  ggplot(mappitng = aes(x = treatment))
-```
-
-
-
-
-
-
-
-
-
