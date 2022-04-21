@@ -1,4 +1,4 @@
-title: "Untitled"
+title: "Plots"
 output: html_document
 date: '2022-04-20'
 ---
@@ -6,3 +6,158 @@ date: '2022-04-20'
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+PCA - differentiated by sex
+```{r}
+male_large_w_meta <- large_w_meta %>% 
+  filter(sex == 'M')
+female_large_w_meta <- large_w_meta %>% 
+  filter(sex == 'F')
+
+male_pca_fit <- male_large_w_meta %>% 
+  select(!(age)) %>% 
+  select(where(is.numeric)) %>%  # retain only numeric columns
+  prcomp(scale = TRUE) # do PCA on scaled data
+
+female_large_w_meta_numeric <- female_large_w_meta %>%
+  select(!(age)) %>% 
+  select(where(is.numeric))    # retain only numeric columns
+  
+female_pca_fit <- female_large_w_meta_numeric[, which(colSums(abs(female_large_w_meta_numeric)) != 0)] %>%   
+  prcomp(scale = TRUE) # do PCA on scaled data
+
+male_pca_plot <- male_pca_fit %>%
+  augment(male_large_w_meta) %>% # add original dataset back in
+  ggplot(aes(.fittedPC1, 
+             .fittedPC2, 
+             color = disease)) + 
+  geom_point(size = 1.5) +
+  labs(x = 'PC1',
+       y = 'PC2',
+       title = 'PCA plot of diseases in males')
+
+female_pca_plot <- female_pca_fit %>%
+  augment(female_large_w_meta) %>% # add original dataset back in
+  ggplot(aes(.fittedPC1, 
+             .fittedPC2, 
+             color = disease)) + 
+  geom_point(size = 1.5) +
+  labs(x = 'PC1',
+       y = 'PC2',
+       title = 'PCA plot of diseases in females')
+
+plot_grid(male_pca_plot, female_pca_plot)
+female_pca_plot
+```
+
+
+
+```{r}
+male_pca_fit %>%
+  tidy(matrix = "eigenvalues")
+
+female_pca_fit %>%
+  tidy(matrix = "eigenvalues")
+```
+
+```{r}
+arrow_style <- arrow(
+  angle = 20, ends = "first", type = "closed", length = grid::unit(8, "pt")
+)
+
+# plot rotation matrix
+male_pca_fit %>%
+  tidy(matrix = "rotation") %>%
+  pivot_wider(names_from = "PC", 
+              names_prefix = "PC", 
+              values_from = "value") %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(xend = 0, 
+               yend = 0, 
+               arrow = arrow_style) +
+  geom_text(
+    aes(label = column),
+    hjust = 1, 
+    nudge_x = -0.02, 
+    color = "#904C2F"
+  ) +
+  xlim(-1.25, .5) + ylim(-.5, 1) +
+  coord_fixed()  # fix aspect ratio to 1:1
+
+female_pca_fit %>%
+  tidy(matrix = "rotation") %>%
+  pivot_wider(names_from = "PC", 
+              names_prefix = "PC", 
+              values_from = "value") %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(xend = 0, 
+               yend = 0, 
+               arrow = arrow_style) +
+  geom_text(
+    aes(label = column),
+    hjust = 1, 
+    nudge_x = -0.02, 
+    color = "#904C2F"
+  ) +
+  xlim(-1.25, .5) + ylim(-.5, 1) +
+  coord_fixed()  # fix aspect ratio to 1:1
+
+```
+
+
+```{r}
+male_pca_fit %>%
+  tidy(matrix = "eigenvalues") %>%
+  ggplot(aes(PC, percent)) +
+  geom_col(fill = "#56B4E9", 
+           alpha = 0.8) +
+  scale_x_continuous(breaks = 1:9) +
+  scale_y_continuous(
+    labels = scales::percent_format(),
+    expand = expansion(mult = c(0, 0.01))
+  ) 
+
+female_pca_fit %>%
+  tidy(matrix = "eigenvalues") %>%
+  ggplot(aes(PC, percent)) +
+  geom_col(fill = "#56B4E9", 
+           alpha = 0.8) +
+  scale_x_continuous(breaks = 1:9) +
+  scale_y_continuous(
+    labels = scales::percent_format(),
+    expand = expansion(mult = c(0, 0.01))
+  ) 
+```
+
+
+
+
+HEATMAP
+
+```{r}
+id = treatment$id
+id = id[seq(1, length(id), 2)]
+treatment_changes <- tibble(id)
+str_sub(treatment_changes$id, 4, 8) <- ""
+
+treatment_wider <- treatment_w_meta %>% 
+  pivot_wider(names_from = 'treatment', values_from = 'AB074162')
+
+
+
+log2(fc)
+
+treatment_changes$id <- 'RA' + treatment$id
+
+treatment_w_meta %>% 
+  ggplot(mappitng = aes(x = treatment))
+```
+
+
+
+
+
+
+
+
+
