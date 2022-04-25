@@ -26,8 +26,11 @@ log2(fc)
 
 treatment_changes$id <- 'RA' + treatment$id
 
-treatment_w_meta %>% 
-  ggplot(mappitng = aes(x = treatment))
+log_long_wider <-log_long %>% 
+  pivot_wider(names_from = id, values_from = AB074162)
+
+  ggplot(mapping = aes(x = id, y = AB074162)) +
+  geom_tile()
 ```
 
 
