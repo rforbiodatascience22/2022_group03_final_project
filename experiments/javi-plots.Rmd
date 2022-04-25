@@ -1,0 +1,80 @@
+---
+title: "Javi plots"
+output: html_document
+date: '2022-04-21'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Libraries
+```{r}
+library("tidyverse")
+library("gtools")
+#library("DESeq2")
+```
+
+
+# read datasets
+```{r}
+large_dataset <- read_tsv(file = "../data/05_large_w_meta_clean.tsv")
+treatment_dataset <- read_tsv(file = "../data/06_treatment_w_meta_clean.tsv")
+```
+
+# this does not work
+```{r}
+pre_treatment <- treatment_dataset %>%
+  select(-treatment, -sex, -age, -disease_duration, -acc_num) %>% 
+  filter(grepl("pre", id)) %>% 
+  mutate(id = str_sub(id, 8, -1))
+
+post_treatment <- treatment_dataset %>% 
+  select(-treatment, -sex, -age, -disease_duration, -acc_num) %>% 
+  filter(grepl("post", id)) %>% 
+  mutate(id = str_sub(id, 9, -1))
+
+fold_change_treatment <- post_treatment %>% 
+  select(-id)
+
+```
+
+# Random exploration
+
+
+
+# PCA plots
+
+# Heatplots
+
+## Fold change pre post treatment (random choice to see if it works: all genes starting wit AA)
+```{r}
+logfold_treatment <- read_tsv(file = "../data/03_treatment_log2fc.tsv")
+
+logfold_long <- logfold_treatment %>% 
+  pivot_longer(cols = -c(id),
+               names_to = "Genes" , 
+               values_to = "log2fc")
+
+logfold_long %>% filter(grepl("^AA", Genes)) %>% 
+  ggplot(mapping = aes(x = Genes,
+                       y = id,
+                       fill = log2fc )) +
+  geom_tile(alpha = 0.5) +
+  scale_fill_gradient2(low = "blue",
+                        mid = "white",
+                        high = "red",
+                        midpoint = 0) +
+  theme_classic(base_size = 8) +
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 45,
+                                   hjust = 1))
+```
+## Trying something different
+
+```{r}
+
+```
+
+
+
