@@ -1,0 +1,171 @@
+title: "Plots"
+output: html_document
+date: '2022-04-20'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(compositions)
+library(cowplot)
+library(ggplot2)
+```
+
+
+```{r}
+large_w_meta <- read_tsv(file = "../data/02_large_w_meta_clean.tsv")
+```
+
+
+PCA - differentiated by sex
+```{r}
+male_large_w_meta <- large_w_meta %>% 
+  filter(sex == 'M')
+female_large_w_meta <- large_w_meta %>% 
+  filter(sex == 'F')
+
+male_pca_fit <- male_large_w_meta  %>%
+  select(-c(id, age)) %>%
+  select(where(is.numeric)) %>%  # retain only numeric columns
+  clr() %>% 
+  prcomp(scale = TRUE) # do PCA on scaled data
+
+female_large_w_meta_numeric <- female_large_w_meta %>%
+  select(!(age)) %>% 
+  select(where(is.numeric))    # retain only numeric columns
+  
+female_pca_fit <- female_large_w_meta_numeric[, which(colSums(abs(female_large_w_meta_numeric)) != 0)] %>%   
+  clr() %>% 
+  prcomp(scale = TRUE) # do PCA on scaled data
+
+male_pca_plot <- male_pca_fit %>%
+  augment(male_large_w_meta) %>% # add original dataset back in
+  ggplot(aes(.fittedPC1, 
+             .fittedPC2, 
+             color = disease)) + 
+  geom_point(size = 1.5) +
+  labs(x = 'PC1',
+       y = 'PC2',
+       title = 'PCA plot of diseases in males')
+
+female_pca_plot <- female_pca_fit %>%
+  augment(female_large_w_meta) %>% # add original dataset back in
+  ggplot(aes(.fittedPC1, 
+             .fittedPC2, 
+             color = disease)) + 
+  geom_point(size = 1.5) +
+  labs(x = 'PC1',
+       y = 'PC2',
+       title = 'PCA plot of diseases in females')
+
+legend <- get_legend(male_pca_plot + theme(legend.position = 'bottom'))
+
+prow <- plot_grid(male_pca_plot + theme(legend.position = 'null'), 
+                      female_pca_plot + theme(legend.position = 'null'), rel_widths = c(2, 2))
+two_pcas <- plot_grid(prow, legend, ncol = 1, rel_heights = c(1, .1))
+two_pcas 
+ggsave('pca_clr.png', two_pcas, width = 10, height = 5)
+```
+
+```{r}
+#write_tsv(male_pca_fit, 'data/04_pca_fit_male.tsv')
+
+#write.csv(x = unclass(loadings(male_pca_fit)), file = "data/04_pca_fit_male.csv")
+
+#write_tsv(male_pca_fit$sdev, 
+       #   '04_pca_fit_male.tsv')
+#write.csv(x = unclass(loadings(male_pca_fit))[,(male_pca_fit$sdev^2 > 1),
+                                              #drop = FALSE], file = "../data/04_pca_fit_male.csv")
+
+#write_tsv(female_pca_fit, 
+        #  '04_pca_fit_female.tsv')
+```
+
+
+```{r}
+male_pca_fit %>%
+  tidy(matrix = "eigenvalues")
+
+female_pca_fit %>%
+  tidy(matrix = "eigenvalues")
+```
+
+```{r}
+arrow_style <- arrow(
+  angle = 20, ends = "first", type = "closed", length = grid::unit(8, "pt")
+)
+
+# plot rotation matrix
+male_pca_fit %>%
+  tidy(matrix = "rotation") %>%
+  pivot_wider(names_from = "PC", 
+              names_prefix = "PC", 
+              values_from = "value") %>%
+  ggplot(aes(PC1, PC2, PC3)) +
+  geom_segment(xend = 0, 
+               yend = 0,
+               arrow = arrow_style) +
+  geom_text(
+    aes(label = column),
+    hjust = 1, 
+    nudge_x = -0.02, 
+    color = "#904C2F"
+  ) +
+  xlim(-1.25, .5) + ylim(-.5, 1) +
+  coord_fixed()  # fix aspect ratio to 1:1
+
+female_pca_fit %>%
+  tidy(matrix = "rotation") %>%
+  pivot_wider(names_from = "PC", 
+              names_prefix = "PC", 
+              values_from = "value") %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(xend = 0, 
+               yend = 0, 
+               arrow = arrow_style) +
+  geom_text(
+    aes(label = column),
+    hjust = 1, 
+    nudge_x = -0.02, 
+    color = "#904C2F"
+  ) +
+  xlim(-1.25, .5) + ylim(-.5, 1) +
+  coord_fixed()  # fix aspect ratio to 1:1
+
+```
+
+
+
+
+```{r}
+male_comp_perc <- male_pca_fit %>%
+  tidy(matrix = "eigenvalues") %>%
+  ggplot(aes(PC, percent)) +
+  geom_col(fill = "#56B4E9", 
+           alpha = 0.8) +
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(
+    labels = scales::percent_format(),
+    expand = expansion(mult = c(0, 0.01))
+  ) 
+
+female_comp_perc <- female_pca_fit %>%
+  tidy(matrix = "eigenvalues") %>%
+  ggplot(aes(PC, percent)) +
+  geom_col(fill = "#56B4E9", 
+           alpha = 0.8) +
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(
+    labels = scales::percent_format(),
+    expand = expansion(mult = c(0, 0.01))
+  ) 
+
+prow_comps <- plot_grid(male_comp_perc, 
+                      female_comp_perc, nrow = 2)
+two_pca_comps <- plot_grid(prow_comps)
+two_pca_comps
+```
+
+

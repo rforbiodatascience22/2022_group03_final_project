@@ -10,7 +10,7 @@ source(file = "R/99_project_functions.R")
 
 
 # Load data ---------------------------------------------------------------
-treatment <- read_tsv(file = "data/06_treatment_w_meta_clean.tsv")
+treatment <- read_tsv(file = "data/02_treatment_w_meta_clean.tsv")
 
 
 # Wrangle data ------------------------------------------------------------
