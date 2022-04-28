@@ -22,6 +22,8 @@ library("viridis")
 ```{r}
 long <- read_tsv(file = "../data/02_large_w_meta_clean.tsv")
 drug <- read_tsv(file = "../data/02_treatment_w_meta_clean.tsv")
+meta_only_drug <-read_tsv(file = "../data/01_treatment_meta.tsv")
+meta_only_long <-read_tsv(file = "../data/01_large_meta.tsv")
 ```
 
 ### Exploration of long metadata
@@ -31,9 +33,7 @@ long %>%
   as_tibble() %>% 
   select(!acc_num)
 
-drug %>% 
-  as_tibble() %>% 
-  select(!acc_num)
+
 ```
 
 ```{r}
@@ -43,9 +43,9 @@ long %>%
     x = disease, fill = sex)
     )+
   geom_bar(position="dodge") +
-  theme_light() +
+  theme_minimal() +
   scale_x_discrete(guide = guide_axis(angle = 45)) + 
-  scale_fill_brewer(palette = "YlGnBu") +
+  scale_fill_viridis_d(alpha = 0.7) +
   labs(title = "Sex participation per condition")
   
   
@@ -59,11 +59,11 @@ long %>%
     x = sex, fill = sex)
     )+
   geom_bar(position="dodge") +
-  facet_wrap(vars(disease)) +
-  theme_light() +
-  scale_x_discrete(guide = guide_axis(angle = 45)) + 
-  scale_fill_brewer(palette = "YlGnBu") +
-  labs(title = "Sex participation per condition")
+  facet_wrap(vars(disease), nrow = 3) +
+  theme_minimal() + 
+  scale_fill_viridis_d(alpha = 0.8) +
+  labs(title = "Sex participation per condition") +
+  xlab("")
   
 ```
 
@@ -79,4 +79,129 @@ long %>%
   labs(title = "Age distribution per condition")
 ```
 
+### Exploration of drug metadata
+
+```{r}
+drug %>% 
+  as_tibble() %>% 
+  select(!acc_num)
+```
+
+### Age distribution of drug cohort
+
+*with Violin plot*
+
+```{r}
+drug %>% 
+  select(1:5) %>% 
+  filter(treatment == TRUE) %>% 
+  ggplot(mapping = aes(x = sex, y = age)) + 
+  geom_violin(aes(colour = sex), scale = "count", alpha = 0.5) +
+  geom_jitter(aes(colour = sex), width = 0.1 )
+ #+ geom_text(aes(label = age), nudge_y = 1, nudge_x = .03, colour = "#3366FF" )
+```
+
+*same but with barchart*
+```{r}
+drug %>% 
+  select(1:5) %>% 
+  filter(treatment == TRUE) %>% 
+  ggplot(mapping = aes(
+    x = sex, fill = sex)
+    )+
+geom_bar(position="dodge") +
+  theme_minimal() + 
+  scale_fill_viridis_d(alpha = 0.8) +
+  labs(title = "Sex participation per condition") +
+  xlab("")
+```
+
+## I prefer these, i think
+
+To show the age distribution in a comparable way, add the treatment cohort into 
+same plot as for all conditions from long data.
+
+```{r}
+drug %>%
+  as_tibble() %>% 
+  select(1:4) %>% 
+  mutate_if(is.logical, as.character) %>% 
+  filter(treatment == "TRUE") %>%
+  dplyr::rename(disease = treatment) %>% 
+  mutate(disease = case_when(disease == 'TRUE' ~ 'Treatment cohort')) %>% 
+  bind_rows(long %>% 
+              select(1:4) 
+            ) %>% 
+  drop_na(age) %>% 
+  ggplot(mapping = aes(x = age, fill = disease) ) +
+  geom_density() +
+  facet_wrap(vars(disease) , ncol = 1) +
+  scale_fill_viridis_d(alpha = 0.5) +
+  theme(legend.position="none") +
+  labs(title = "Age distribution per condition")
+```
+
+```{r}
+drug %>%
+  as_tibble() %>% 
+  select(1:4) %>% 
+  mutate_if(is.logical, as.character) %>% 
+  filter(treatment == "TRUE") %>%
+  dplyr::rename(disease = treatment) %>% 
+  mutate(disease = case_when(disease == 'TRUE' ~ 'Treatment cohort')) %>% 
+  bind_rows(long %>% 
+              select(1:4) 
+            ) %>% 
+    ggplot(mapping = aes(
+    x = sex, fill = sex)
+    )+
+  geom_bar(position="dodge") +
+  facet_wrap(vars(disease)) +
+  theme_minimal() + 
+  scale_fill_viridis_d(alpha = 0.8) +
+  labs(title = "Sex participation per condition") +
+  xlab("")
+```
+Ages of male female, for all conditions
+
+```{r}
+drug %>%
+  as_tibble() %>% 
+  select(1:4) %>% 
+  mutate_if(is.logical, as.character) %>% 
+  filter(treatment == "TRUE") %>%
+  dplyr::rename(disease = treatment) %>% 
+  mutate(disease = case_when(disease == 'TRUE' ~ 'Treatment cohort')) %>% 
+  bind_rows(long %>% 
+              select(1:4) 
+            ) %>%
+  drop_na(age) %>% 
+  ggplot(mapping = aes(x = sex, y = age, fill = sex)) + 
+  geom_violin(aes(colour = sex), scale = "count", alpha = 0.8) +
+  geom_boxplot(width=0.1, color="grey", alpha=0.2) +
+  geom_jitter( width = 0.1 )+
+  scale_fill_viridis(discrete = TRUE) +
+  facet_wrap(vars(disease)) 
+  
+```
+```{r}
+drug %>%
+  as_tibble() %>% 
+  select(1:4) %>% 
+  mutate_if(is.logical, as.character) %>% 
+  filter(treatment == "TRUE") %>%
+  dplyr::rename(disease = treatment) %>% 
+  mutate(disease = case_when(disease == 'TRUE' ~ 'Treatment cohort')) %>% 
+  bind_rows(long %>% 
+              select(1:4) 
+            ) %>%
+  drop_na(age) %>% 
+  ggplot(mapping = aes(x = sex, y = age, fill = sex)) + 
+  geom_violin(position="dodge", alpha=0.5, outlier.colour="transparent") +
+  geom_boxplot(width=0.1, color="grey", alpha=0.2) +
+  geom_jitter( size= 1, width = 0.1 )+
+  theme_minimal()+
+  scale_fill_viridis(discrete=T, option = "H") +
+  facet_wrap(vars(disease), nrow = 1) 
+```
 
