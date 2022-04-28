@@ -66,10 +66,22 @@ prow <- plot_grid(male_pca_plot + theme(legend.position = 'null'),
                       female_pca_plot + theme(legend.position = 'null'), rel_widths = c(2, 2))
 two_pcas <- plot_grid(prow, legend, ncol = 1, rel_heights = c(1, .1))
 two_pcas 
-pdf('pca')
 ggsave('pca_clr.png', two_pcas, width = 10, height = 5)
 ```
 
+```{r}
+#write_tsv(male_pca_fit, 'data/04_pca_fit_male.tsv')
+
+#write.csv(x = unclass(loadings(male_pca_fit)), file = "data/04_pca_fit_male.csv")
+
+#write_tsv(male_pca_fit$sdev, 
+       #   '04_pca_fit_male.tsv')
+#write.csv(x = unclass(loadings(male_pca_fit))[,(male_pca_fit$sdev^2 > 1),
+                                              #drop = FALSE], file = "../data/04_pca_fit_male.csv")
+
+#write_tsv(female_pca_fit, 
+        #  '04_pca_fit_female.tsv')
+```
 
 
 ```{r}
