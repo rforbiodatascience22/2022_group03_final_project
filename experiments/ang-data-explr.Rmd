@@ -1,0 +1,82 @@
+---
+title: "angeliki_data-explor"
+author: "Angeliki"
+date: '2022-04-28'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Libraries
+```{r}
+library("tidyverse")
+library("ggridges")
+library("viridisLite")
+library("viridis")
+```
+
+#### Loading data
+
+```{r}
+long <- read_tsv(file = "../data/02_large_w_meta_clean.tsv")
+drug <- read_tsv(file = "../data/02_treatment_w_meta_clean.tsv")
+```
+
+### Exploration of long metadata
+
+```{r}
+long %>% 
+  as_tibble() %>% 
+  select(!acc_num)
+
+drug %>% 
+  as_tibble() %>% 
+  select(!acc_num)
+```
+
+```{r}
+long %>% 
+  select(1:4) %>% 
+  ggplot(mapping = aes(
+    x = disease, fill = sex)
+    )+
+  geom_bar(position="dodge") +
+  theme_light() +
+  scale_x_discrete(guide = guide_axis(angle = 45)) + 
+  scale_fill_brewer(palette = "YlGnBu") +
+  labs(title = "Sex participation per condition")
+  
+  
+```
+
+Same thing, different style
+```{r}
+long %>% 
+  select(1:4) %>% 
+  ggplot(mapping = aes(
+    x = sex, fill = sex)
+    )+
+  geom_bar(position="dodge") +
+  facet_wrap(vars(disease)) +
+  theme_light() +
+  scale_x_discrete(guide = guide_axis(angle = 45)) + 
+  scale_fill_brewer(palette = "YlGnBu") +
+  labs(title = "Sex participation per condition")
+  
+```
+
+```{r}
+long %>% 
+  select(1:4) %>% 
+  drop_na(age) %>% 
+  ggplot(mapping = aes(x = age, fill = disease) ) +
+  geom_density() +
+  facet_wrap(vars(disease) , ncol = 1) +
+  scale_fill_viridis_d(alpha = 0.5) +
+  theme(legend.position="none") +
+  labs(title = "Age distribution per condition")
+```
+
+
