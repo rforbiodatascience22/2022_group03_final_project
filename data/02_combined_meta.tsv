@@ -1,0 +1,257 @@
+id	disease	sex	age	acc_num	treatment	disease_duration
+normal_tissue_1	Normal	M	13	GSM2370970	NA	NA
+normal_tissue_2	Normal	F	32	GSM2370971	NA	NA
+normal_tissue_3	Normal	M	22	GSM2370972	NA	NA
+normal_tissue_4	Normal	M	47	GSM2370973	NA	NA
+normal_tissue_5	Normal	M	27	GSM2370974	NA	NA
+normal_tissue_6	Normal	M	47	GSM2370975	NA	NA
+normal_tissue_7	Normal	F	32	GSM2370976	NA	NA
+normal_tissue_8	Normal	F	31	GSM2370977	NA	NA
+normal_tissue_9	Normal	F	15	GSM2370978	NA	NA
+normal_tissue_10	Normal	M	66	GSM2370979	NA	NA
+normal_tissue_11	Normal	M	28	GSM2370980	NA	NA
+normal_tissue_12	Normal	M	63	GSM2370981	NA	NA
+normal_tissue_13	Normal	M	15	GSM2370982	NA	NA
+normal_tissue_14	Normal	F	55	GSM2370983	NA	NA
+normal_tissue_15	Normal	F	56	GSM2370984	NA	NA
+normal_tissue_16	Normal	F	32	GSM2370985	NA	NA
+normal_tissue_17	Normal	F	31	GSM2370986	NA	NA
+normal_tissue_18	Normal	F	73	GSM2370987	NA	NA
+normal_tissue_19	Normal	M	20	GSM2370988	NA	NA
+normal_tissue_20	Normal	F	42	GSM2370989	NA	NA
+normal_tissue_21	Normal	M	33	GSM2370990	NA	NA
+normal_tissue_22	Normal	M	20	GSM2370991	NA	NA
+normal_tissue_23	Normal	F	52	GSM2370992	NA	NA
+normal_tissue_24	Normal	F	24	GSM2370993	NA	NA
+normal_tissue_25	Normal	F	28	GSM2370994	NA	NA
+normal_tissue_26	Normal	M	29	GSM2370995	NA	NA
+normal_tissue_27	Normal	F	23	GSM2370996	NA	NA
+normal_tissue_28	Normal	M	29	GSM2370997	NA	NA
+OA_tissue_1	Osteoarthritis	M	33	GSM2370998	NA	NA
+OA_tissue_2	Osteoarthritis	F	46	GSM2370999	NA	NA
+OA_tissue_3	Osteoarthritis	F	58	GSM2371000	NA	NA
+OA_tissue_4	Osteoarthritis	M	63	GSM2371001	NA	NA
+OA_tissue_5	Osteoarthritis	M	48	GSM2371002	NA	NA
+OA_tissue_6	Osteoarthritis	M	17	GSM2371003	NA	NA
+OA_tissue_7	Osteoarthritis	F	77	GSM2371004	NA	NA
+OA_tissue_8	Osteoarthritis	F	69	GSM2371005	NA	NA
+OA_tissue_9	Osteoarthritis	M	60	GSM2371006	NA	NA
+OA_tissue_10	Osteoarthritis	F	51	GSM2371007	NA	NA
+OA_tissue_11	Osteoarthritis	M	19	GSM2371008	NA	NA
+OA_tissue_12	Osteoarthritis	F	60	GSM2371009	NA	NA
+OA_tissue_13	Osteoarthritis	F	63	GSM2371010	NA	NA
+OA_tissue_14	Osteoarthritis	M	19	GSM2371011	NA	NA
+OA_tissue_15	Osteoarthritis	F	53	GSM2371012	NA	NA
+OA_tissue_16	Osteoarthritis	M	NA	GSM2371013	NA	NA
+OA_tissue_17	Osteoarthritis	F	NA	GSM2371014	NA	NA
+OA_tissue_18	Osteoarthritis	F	NA	GSM2371015	NA	NA
+OA_tissue_19	Osteoarthritis	F	NA	GSM2371016	NA	NA
+OA_tissue_20	Osteoarthritis	F	NA	GSM2371017	NA	NA
+OA_tissue_21	Osteoarthritis	F	NA	GSM2371018	NA	NA
+OA_tissue_22	Osteoarthritis	M	NA	GSM2371019	NA	NA
+AG_tissue_1	Arthralgia	F	38	GSM2371020	NA	NA
+AG_tissue_2	Arthralgia	M	NA	GSM2371021	NA	NA
+AG_tissue_3	Arthralgia	F	55	GSM2371022	NA	NA
+AG_tissue_4	Arthralgia	F	64	GSM2371023	NA	NA
+AG_tissue_5	Arthralgia	F	66	GSM2371024	NA	NA
+AG_tissue_6	Arthralgia	F	33	GSM2371025	NA	NA
+AG_tissue_7	Arthralgia	F	60	GSM2371026	NA	NA
+AG_tissue_8	Arthralgia	F	NA	GSM2371027	NA	NA
+AG_tissue_9	Arthralgia	M	49	GSM2371028	NA	NA
+AG_tissue_10	Arthralgia	F	55	GSM2371029	NA	NA
+undiff_tissue_1	Undifferentiated arthritis	F	NA	GSM2371030	NA	NA
+undiff_tissue_2	Undifferentiated arthritis	F	NA	GSM2371031	NA	NA
+undiff_tissue_3	Undifferentiated arthritis	F	NA	GSM2371032	NA	NA
+undiff_tissue_4	Undifferentiated arthritis	F	NA	GSM2371033	NA	NA
+undiff_tissue_5	Undifferentiated arthritis	M	NA	GSM2371034	NA	NA
+undiff_tissue_6	Undifferentiated arthritis	F	NA	GSM2371035	NA	NA
+RA_tissue_1	Rheumatoid arthritis (early)	M	48	GSM2371036	NA	NA
+RA_tissue_2	Rheumatoid arthritis (early)	F	72	GSM2371037	NA	NA
+RA_tissue_3	Rheumatoid arthritis (early)	M	68	GSM2371038	NA	NA
+RA_tissue_4	Rheumatoid arthritis (early)	M	67	GSM2371039	NA	NA
+RA_tissue_5	Rheumatoid arthritis (early)	F	44	GSM2371040	NA	NA
+RA_tissue_6	Rheumatoid arthritis (early)	M	33	GSM2371041	NA	NA
+RA_tissue_7	Rheumatoid arthritis (early)	M	39	GSM2371042	NA	NA
+RA_tissue_8	Rheumatoid arthritis (early)	F	46	GSM2371043	NA	NA
+RA_tissue_9	Rheumatoid arthritis (early)	F	57	GSM2371044	NA	NA
+RA_tissue_10	Rheumatoid arthritis (early)	F	53	GSM2371045	NA	NA
+RA_tissue_11	Rheumatoid arthritis (early)	F	33	GSM2371046	NA	NA
+RA_tissue_12	Rheumatoid arthritis (early)	M	33	GSM2371047	NA	NA
+RA_tissue_13	Rheumatoid arthritis (early)	M	56	GSM2371048	NA	NA
+RA_tissue_14	Rheumatoid arthritis (early)	M	63	GSM2371049	NA	NA
+RA_tissue_15	Rheumatoid arthritis (early)	M	49	GSM2371050	NA	NA
+RA_tissue_16	Rheumatoid arthritis (early)	M	55	GSM2371051	NA	NA
+RA_tissue_17	Rheumatoid arthritis (early)	F	55	GSM2371052	NA	NA
+RA_tissue_18	Rheumatoid arthritis (early)	M	60	GSM2371053	NA	NA
+RA_tissue_19	Rheumatoid arthritis (early)	F	35	GSM2371054	NA	NA
+RA_tissue_20	Rheumatoid arthritis (early)	F	79	GSM2371055	NA	NA
+RA_tissue_21	Rheumatoid arthritis (early)	M	50	GSM2371056	NA	NA
+RA_tissue_22	Rheumatoid arthritis (early)	M	41	GSM2371057	NA	NA
+RA_tissue_23	Rheumatoid arthritis (early)	F	39	GSM2371058	NA	NA
+RA_tissue_24	Rheumatoid arthritis (early)	F	60	GSM2371059	NA	NA
+RA_tissue_25	Rheumatoid arthritis (early)	F	37	GSM2371060	NA	NA
+RA_tissue_26	Rheumatoid arthritis (early)	M	88	GSM2371061	NA	NA
+RA_tissue_27	Rheumatoid arthritis (early)	M	89	GSM2371062	NA	NA
+RA_tissue_28	Rheumatoid arthritis (early)	F	71	GSM2371063	NA	NA
+RA_tissue_29	Rheumatoid arthritis (early)	F	27	GSM2371064	NA	NA
+RA_tissue_30	Rheumatoid arthritis (early)	M	67	GSM2371065	NA	NA
+RA_tissue_31	Rheumatoid arthritis (early)	F	73	GSM2371066	NA	NA
+RA_tissue_32	Rheumatoid arthritis (early)	M	33	GSM2371067	NA	NA
+RA_tissue_33	Rheumatoid arthritis (early)	F	59	GSM2371068	NA	NA
+RA_tissue_34	Rheumatoid arthritis (early)	F	49	GSM2371069	NA	NA
+RA_tissue_35	Rheumatoid arthritis (early)	F	64	GSM2371070	NA	NA
+RA_tissue_36	Rheumatoid arthritis (early)	M	76	GSM2371071	NA	NA
+RA_tissue_37	Rheumatoid arthritis (early)	M	73	GSM2371072	NA	NA
+RA_tissue_38	Rheumatoid arthritis (early)	F	54	GSM2371073	NA	NA
+RA_tissue_39	Rheumatoid arthritis (early)	F	39	GSM2371074	NA	NA
+RA_tissue_40	Rheumatoid arthritis (early)	F	32	GSM2371075	NA	NA
+RA_tissue_41	Rheumatoid arthritis (early)	F	53	GSM2371076	NA	NA
+RA_tissue_42	Rheumatoid arthritis (early)	F	62	GSM2371077	NA	NA
+RA_tissue_43	Rheumatoid arthritis (early)	M	51	GSM2371078	NA	NA
+RA_tissue_44	Rheumatoid arthritis (early)	F	61	GSM2371079	NA	NA
+RA_tissue_45	Rheumatoid arthritis (early)	F	48	GSM2371080	NA	NA
+RA_tissue_46	Rheumatoid arthritis (early)	F	46	GSM2371081	NA	NA
+RA_tissue_47	Rheumatoid arthritis (early)	F	54	GSM2371082	NA	NA
+RA_tissue_48	Rheumatoid arthritis (early)	M	49	GSM2371083	NA	NA
+RA_tissue_49	Rheumatoid arthritis (early)	F	88	GSM2371084	NA	NA
+RA_tissue_50	Rheumatoid arthritis (early)	F	25	GSM2371085	NA	NA
+RA_tissue_51	Rheumatoid arthritis (early)	F	61	GSM2371086	NA	NA
+RA_tissue_52	Rheumatoid arthritis (early)	F	93	GSM2371087	NA	NA
+RA_tissue_53	Rheumatoid arthritis (early)	M	76	GSM2371088	NA	NA
+RA_tissue_54	Rheumatoid arthritis (early)	M	65	GSM2371089	NA	NA
+RA_tissue_55	Rheumatoid arthritis (early)	F	79	GSM2371090	NA	NA
+RA_tissue_56	Rheumatoid arthritis (early)	F	41	GSM2371091	NA	NA
+RA_tissue_57	Rheumatoid arthritis (early)	M	69	GSM2371092	NA	NA
+RA_tissue_58	Rheumatoid arthritis (established)	F	27	GSM2371093	NA	NA
+RA_tissue_59	Rheumatoid arthritis (established)	F	52	GSM2371094	NA	NA
+RA_tissue_60	Rheumatoid arthritis (established)	F	33	GSM2371095	NA	NA
+RA_tissue_61	Rheumatoid arthritis (established)	M	51	GSM2371096	NA	NA
+RA_tissue_62	Rheumatoid arthritis (established)	F	24	GSM2371097	NA	NA
+RA_tissue_63	Rheumatoid arthritis (established)	F	43	GSM2371098	NA	NA
+RA_tissue_64	Rheumatoid arthritis (established)	F	32	GSM2371099	NA	NA
+RA_tissue_65	Rheumatoid arthritis (established)	F	58	GSM2371100	NA	NA
+RA_tissue_66	Rheumatoid arthritis (established)	M	80	GSM2371101	NA	NA
+RA_tissue_67	Rheumatoid arthritis (established)	F	69	GSM2371102	NA	NA
+RA_tissue_68	Rheumatoid arthritis (established)	F	63	GSM2371103	NA	NA
+RA_tissue_69	Rheumatoid arthritis (established)	F	42	GSM2371104	NA	NA
+RA_tissue_70	Rheumatoid arthritis (established)	F	27	GSM2371105	NA	NA
+RA_tissue_71	Rheumatoid arthritis (established)	F	65	GSM2371106	NA	NA
+RA_tissue_72	Rheumatoid arthritis (established)	F	40	GSM2371107	NA	NA
+RA_tissue_73	Rheumatoid arthritis (established)	F	64	GSM2371108	NA	NA
+RA_tissue_74	Rheumatoid arthritis (established)	F	48	GSM2371109	NA	NA
+RA_tissue_75	Rheumatoid arthritis (established)	F	44	GSM2371110	NA	NA
+RA_tissue_76	Rheumatoid arthritis (established)	F	32	GSM2371111	NA	NA
+RA_tissue_77	Rheumatoid arthritis (established)	F	40	GSM2371112	NA	NA
+RA_tissue_78	Rheumatoid arthritis (established)	F	58	GSM2371113	NA	NA
+RA_tissue_79	Rheumatoid arthritis (established)	F	54	GSM2371114	NA	NA
+RA_tissue_80	Rheumatoid arthritis (established)	F	43	GSM2371115	NA	NA
+RA_tissue_81	Rheumatoid arthritis (established)	F	48	GSM2371116	NA	NA
+RA_tissue_82	Rheumatoid arthritis (established)	M	59	GSM2371117	NA	NA
+RA_tissue_83	Rheumatoid arthritis (established)	F	73	GSM2371118	NA	NA
+RA_tissue_84	Rheumatoid arthritis (established)	F	47	GSM2371119	NA	NA
+RA_tissue_85	Rheumatoid arthritis (established)	F	71	GSM2371120	NA	NA
+RA_tissue_86	Rheumatoid arthritis (established)	F	37	GSM2371121	NA	NA
+RA_tissue_87	Rheumatoid arthritis (established)	F	53	GSM2371122	NA	NA
+RA_tissue_88	Rheumatoid arthritis (established)	F	61	GSM2371123	NA	NA
+RA_tissue_89	Rheumatoid arthritis (established)	F	48	GSM2371124	NA	NA
+RA_tissue_90	Rheumatoid arthritis (established)	F	55	GSM2371125	NA	NA
+RA_tissue_91	Rheumatoid arthritis (established)	F	72	GSM2371126	NA	NA
+RA_tissue_92	Rheumatoid arthritis (established)	F	42	GSM2371127	NA	NA
+RA_tissue_93	Rheumatoid arthritis (established)	M	61	GSM2371128	NA	NA
+RA_tissue_94	Rheumatoid arthritis (established)	F	66	GSM2371129	NA	NA
+RA_tissue_95	Rheumatoid arthritis (established)	F	42	GSM2371130	NA	NA
+RA_tissue_96	Rheumatoid arthritis (established)	F	66	GSM2371131	NA	NA
+RA_tissue_97	Rheumatoid arthritis (established)	M	65	GSM2371132	NA	NA
+RA_tissue_98	Rheumatoid arthritis (established)	F	50	GSM2371133	NA	NA
+RA_tissue_99	Rheumatoid arthritis (established)	F	63	GSM2371134	NA	NA
+RA_tissue_100	Rheumatoid arthritis (established)	F	58	GSM2371135	NA	NA
+RA_tissue_101	Rheumatoid arthritis (established)	M	53	GSM2371136	NA	NA
+RA_tissue_102	Rheumatoid arthritis (established)	F	54	GSM2371137	NA	NA
+RA_tissue_103	Rheumatoid arthritis (established)	F	66	GSM2371138	NA	NA
+RA_tissue_104	Rheumatoid arthritis (established)	F	62	GSM2371139	NA	NA
+RA_tissue_105	Rheumatoid arthritis (established)	M	55	GSM2371140	NA	NA
+RA_tissue_106	Rheumatoid arthritis (established)	M	56	GSM2371141	NA	NA
+RA_tissue_107	Rheumatoid arthritis (established)	M	56	GSM2371142	NA	NA
+RA_tissue_108	Rheumatoid arthritis (established)	M	52	GSM2371143	NA	NA
+RA_tissue_109	Rheumatoid arthritis (established)	F	60	GSM2371144	NA	NA
+RA_tissue_110	Rheumatoid arthritis (established)	F	52	GSM2371145	NA	NA
+RA_tissue_111	Rheumatoid arthritis (established)	F	59	GSM2371146	NA	NA
+RA_tissue_112	Rheumatoid arthritis (established)	F	35	GSM2371147	NA	NA
+RA_tissue_113	Rheumatoid arthritis (established)	F	61	GSM2371148	NA	NA
+RA_tissue_114	Rheumatoid arthritis (established)	F	85	GSM2371149	NA	NA
+RA_tissue_115	Rheumatoid arthritis (established)	F	71	GSM2371150	NA	NA
+RA_tissue_116	Rheumatoid arthritis (established)	M	31	GSM2371151	NA	NA
+RA_tissue_117	Rheumatoid arthritis (established)	M	52	GSM2371152	NA	NA
+RA_tissue_118	Rheumatoid arthritis (established)	M	73	GSM2371153	NA	NA
+RA_tissue_119	Rheumatoid arthritis (established)	F	53	GSM2371154	NA	NA
+RA_tissue_120	Rheumatoid arthritis (established)	F	47	GSM2371155	NA	NA
+RA_tissue_121	Rheumatoid arthritis (established)	M	NA	GSM2371156	NA	NA
+RA_tissue_122	Rheumatoid arthritis (established)	F	NA	GSM2371157	NA	NA
+RA_tissue_123	Rheumatoid arthritis (established)	F	NA	GSM2371158	NA	NA
+RA_tissue_124	Rheumatoid arthritis (established)	M	NA	GSM2371159	NA	NA
+RA_tissue_125	Rheumatoid arthritis (established)	F	NA	GSM2371160	NA	NA
+RA_tissue_126	Rheumatoid arthritis (established)	F	NA	GSM2371161	NA	NA
+RA_tissue_127	Rheumatoid arthritis (established)	M	NA	GSM2371162	NA	NA
+RA_tissue_128	Rheumatoid arthritis (established)	F	NA	GSM2371163	NA	NA
+RA_tissue_129	Rheumatoid arthritis (established)	M	29	GSM2371164	NA	NA
+RA_tissue_130	Rheumatoid arthritis (established)	M	62	GSM2371165	NA	NA
+RA_tissue_131	Rheumatoid arthritis (established)	F	63	GSM2371166	NA	NA
+RA_tissue_132	Rheumatoid arthritis (established)	F	47	GSM2371167	NA	NA
+RA_tissue_133	Rheumatoid arthritis (established)	F	45	GSM2371168	NA	NA
+RA_tissue_134	Rheumatoid arthritis (established)	F	24	GSM2371169	NA	NA
+RA_tissue_135	Rheumatoid arthritis (established)	M	53	GSM2371170	NA	NA
+RA_tissue_136	Rheumatoid arthritis (established)	F	57	GSM2371171	NA	NA
+RA_tissue_137	Rheumatoid arthritis (established)	F	65	GSM2371172	NA	NA
+RA_tissue_138	Rheumatoid arthritis (established)	F	NA	GSM2371173	NA	NA
+RA_tissue_139	Rheumatoid arthritis (established)	F	48	GSM2371174	NA	NA
+RA_tissue_140	Rheumatoid arthritis (established)	F	75	GSM2371175	NA	NA
+RA_tissue_141	Rheumatoid arthritis (established)	M	44	GSM2371176	NA	NA
+RA_tissue_142	Rheumatoid arthritis (established)	F	57	GSM2371177	NA	NA
+RA_tissue_143	Rheumatoid arthritis (established)	M	65	GSM2371178	NA	NA
+RA_tissue_144	Rheumatoid arthritis (established)	F	52	GSM2371179	NA	NA
+RA_tissue_145	Rheumatoid arthritis (established)	F	65	GSM2371180	NA	NA
+RA_tissue_146	Rheumatoid arthritis (established)	F	64	GSM2371181	NA	NA
+RA_tissue_147	Rheumatoid arthritis (established)	F	75	GSM2371182	NA	NA
+RA_tissue_148	Rheumatoid arthritis (established)	M	50	GSM2371183	NA	NA
+RA_tissue_149	Rheumatoid arthritis (established)	F	NA	GSM2371184	NA	NA
+RA_tissue_150	Rheumatoid arthritis (established)	F	79	GSM2371185	NA	NA
+RA_tissue_151	Rheumatoid arthritis (established)	F	NA	GSM2371186	NA	NA
+RA_tissue_152	Rheumatoid arthritis (established)	F	NA	GSM2371187	NA	NA
+RA_post_1	NA	F	44	GSM2552970	TRUE	6
+RA_pre_1	NA	F	44	GSM2552971	FALSE	6
+RA_post_2	NA	F	53	GSM2552972	TRUE	16
+RA_pre_2	NA	F	53	GSM2552973	FALSE	16
+RA_post_3	NA	F	33	GSM2552974	TRUE	26
+RA_pre_3	NA	F	33	GSM2552975	FALSE	26
+RA_post_4	NA	M	33	GSM2552976	TRUE	8
+RA_pre_4	NA	M	33	GSM2552977	FALSE	8
+RA_post_5	NA	M	48	GSM2552978	TRUE	6
+RA_pre_5	NA	M	48	GSM2552979	FALSE	6
+RA_post_6	NA	F	72	GSM2552980	TRUE	20
+RA_pre_6	NA	F	72	GSM2552981	FALSE	20
+RA_post_7	NA	F	55	GSM2552982	TRUE	16
+RA_pre_7	NA	F	55	GSM2552983	FALSE	16
+RA_post_8	NA	M	60	GSM2552984	TRUE	16
+RA_pre_8	NA	M	60	GSM2552985	FALSE	16
+RA_post_9	NA	M	56	GSM2552986	TRUE	6
+RA_pre_9	NA	M	56	GSM2552987	FALSE	6
+RA_post_10	NA	M	67	GSM2552988	TRUE	4
+RA_pre_10	NA	M	67	GSM2552989	FALSE	4
+RA_post_11	NA	F	57	GSM2552990	TRUE	30
+RA_pre_11	NA	F	57	GSM2552991	FALSE	30
+RA_post_12	NA	M	63	GSM2552992	TRUE	22
+RA_pre_12	NA	M	63	GSM2552993	FALSE	22
+RA_post_13	NA	M	49	GSM2552994	TRUE	8
+RA_pre_13	NA	M	49	GSM2552995	FALSE	8
+RA_post_14	NA	M	55	GSM2552996	TRUE	6
+RA_pre_14	NA	M	55	GSM2552997	FALSE	6
+RA_post_15	NA	M	33	GSM2552998	TRUE	40
+RA_pre_15	NA	M	33	GSM2552999	FALSE	40
+RA_post_16	NA	F	35	GSM2553000	TRUE	28
+RA_pre_16	NA	F	35	GSM2553001	FALSE	28
+RA_post_17	NA	M	68	GSM2553002	TRUE	40
+RA_pre_17	NA	M	68	GSM2553003	FALSE	40
+RA_post_18	NA	F	46	GSM2553004	TRUE	16
+RA_pre_18	NA	F	46	GSM2553005	FALSE	16
+RA_post_19	NA	M	39	GSM2553006	TRUE	20
+RA_pre_19	NA	M	39	GSM2553007	FALSE	20
