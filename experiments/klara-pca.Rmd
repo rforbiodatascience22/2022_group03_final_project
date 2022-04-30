@@ -8,9 +8,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+library(tidyverse)
 library(compositions)
 library(cowplot)
 library(ggplot2)
+library(scales)
+library(tidyr)
+library(broom)
 ```
 
 
@@ -22,9 +26,9 @@ large_w_meta <- read_tsv(file = "../data/02_large_w_meta_clean.tsv")
 PCA - differentiated by sex
 ```{r}
 male_large_w_meta <- large_w_meta %>% 
-  filter(sex == 'M')
+  filter(sex == 'M' & (disease == 'Normal' | disease == 'Rheumatoid arthritis (early)' | disease == 'Rheumatoid arthritis (established)'))
 female_large_w_meta <- large_w_meta %>% 
-  filter(sex == 'F')
+  filter(sex == 'F' & (disease == 'Normal' | disease == 'Rheumatoid arthritis (early)' | disease == 'Rheumatoid arthritis (established)'))
 
 male_pca_fit <- male_large_w_meta  %>%
   select(-c(id, age)) %>%
@@ -69,20 +73,6 @@ two_pcas
 ggsave('pca_clr.png', two_pcas, width = 10, height = 5)
 ```
 
-```{r}
-#write_tsv(male_pca_fit, 'data/04_pca_fit_male.tsv')
-
-#write.csv(x = unclass(loadings(male_pca_fit)), file = "data/04_pca_fit_male.csv")
-
-#write_tsv(male_pca_fit$sdev, 
-       #   '04_pca_fit_male.tsv')
-#write.csv(x = unclass(loadings(male_pca_fit))[,(male_pca_fit$sdev^2 > 1),
-                                              #drop = FALSE], file = "../data/04_pca_fit_male.csv")
-
-#write_tsv(female_pca_fit, 
-        #  '04_pca_fit_female.tsv')
-```
-
 
 ```{r}
 male_pca_fit %>%
@@ -90,9 +80,8 @@ male_pca_fit %>%
 
 female_pca_fit %>%
   tidy(matrix = "eigenvalues")
-```
 
-```{r}
+
 arrow_style <- arrow(
   angle = 20, ends = "first", type = "closed", length = grid::unit(8, "pt")
 )
@@ -168,4 +157,104 @@ two_pca_comps <- plot_grid(prow_comps)
 two_pca_comps
 ```
 
+
+KMEANS - females
+```{r}
+tidy_female_pca <- female_pca_fit %>% 
+  tidy() 
+
+female_points <- tidy_female_pca %>% 
+  filter(PC==1 | PC==2) %>% 
+  pivot_wider(names_from = 'PC', values_from = 'value') %>% 
+  select(-row)
+
+
+colnames(female_points)[1] = 'PC1'
+colnames(female_points)[2] = 'PC2'
+
+kclusts <- 
+  tibble(k = 2:3) %>%
+  mutate(
+    kclust = map(k, ~kmeans(female_points, .x)),
+    tidied = map(kclust, tidy),
+    glanced = map(kclust, glance),
+    augmented = map(kclust, augment, female_points)
+  )
+
+clusters <- 
+  kclusts %>%
+  unnest(cols = c(tidied))
+
+assignments <- 
+  kclusts %>% 
+  unnest(cols = c(augmented))
+
+clusterings <- 
+  kclusts %>%
+  unnest(cols = c(glanced))
+
+p1 <- assignments %>% 
+  ggplot(aes(x = PC1, 
+             y = PC2)) +
+  geom_point(aes(color = .cluster), alpha = 0.8) +
+  labs(title = 'Plot of clustered PCA components',
+       color = 'cluster') +
+  facet_wrap(~k)
+```
+
+
+
+KMEANS - males
+```{r}
+tidy_male_pca <- male_pca_fit %>% 
+  tidy() 
+
+male_points <- tidy_male_pca %>% 
+  filter(PC==1 | PC==2) %>% 
+  pivot_wider(names_from = 'PC', values_from = 'value') %>% 
+  select(-row)
+
+
+colnames(male_points)[1] = 'PC1'
+colnames(male_points)[2] = 'PC2'
+
+kclusts <- 
+  tibble(k = 2:3) %>%
+  mutate(
+    kclust = map(k, ~kmeans(male_points, .x)),
+    tidied = map(kclust, tidy),
+    glanced = map(kclust, glance),
+    augmented = map(kclust, augment, male_points)
+  )
+
+clusters <- 
+  kclusts %>%
+  unnest(cols = c(tidied))
+
+assignments <- 
+  kclusts %>% 
+  unnest(cols = c(augmented))
+
+clusterings <- 
+  kclusts %>%
+  unnest(cols = c(glanced))
+
+p2 <- assignments %>% 
+  ggplot(aes(x = PC1, 
+             y = PC2)) +
+  geom_point(aes(color = .cluster), alpha = 0.8) +
+  labs(title = 'Plot of clustered PCA components',
+       color = 'cluster') +
+  facet_wrap(~k)
+```
+
+
+```{r}
+prow_clus <- plot_grid(female_pca_plot + theme(legend.position = 'bottom') + guides(colour = guide_legend(nrow = 3)), p1 + theme(legend.position = 'bottom') + guides(colour = guide_legend(nrow = 3)), rel_widths = c(2, 4))
+```
+
+```{r}
+prow_clus_m <- plot_grid(male_pca_plot + theme(legend.position = 'bottom') + guides(colour = guide_legend(nrow = 3)), p2 + theme(legend.position = 'bottom') + guides(colour = guide_legend(nrow = 3)), rel_widths = c(2, 4))
+prow_clus_m
+```
 
