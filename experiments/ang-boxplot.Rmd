@@ -9,44 +9,53 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Effect-of-treatment boxplots
+# Effect-of-treatment boxplots
 
 CD3D, MS4A1, CTLA4, CD19 -> where shown to go back to normal
 after treatment
 IL10, CLEC12A, AURKA, MMP13, CLEC2B, CD58 -> are RA markers
 and do not return to normal levels
 
-Read treatment log data
+libraries
 ```{r}
-logfold_treatment <- read_tsv(
-  file = "../data/03_treatment_log2fc.tsv")
+library(tidyverse)
+```
+
+## Load data
+```{r}
+# logfold_treatment <- read_tsv(
+#   file = "../data/03_treatment_log2fc.tsv")
+treatment_dataset <- read_tsv(
+  file = "../data/02_treatment_w_meta_clean.tsv")
 all_conditions <- read_tsv(
   file = "../data/02_large_w_meta_clean.tsv")
 ```
 
 Wrangle
-From the logfolds select only important genes and make it 
-into long format.
+
+<!-- This are the wrong logs -->
+<!-- From the logfolds select only important genes and make it  -->
+<!-- into long format. -->
 
 ```{r}
-logFC_treatment <- logfold_treatment %>% 
-  select(id,
-         CD3D,
-         MS4A1,
-         CTLA4,
-         CD19,
-         IL10,
-         CLEC12A,
-         AURKA,
-         MMP13,
-         CLEC2B,
-         CD58
-         ) %>% 
-  pivot_longer(cols = -c(id),
-               names_to = "Genes" , 
-               values_to = "log2fc")
-
-logFC_treatment
+# logFC_treatment <- logfold_treatment %>% 
+#   select(id,
+#          CD3D,
+#          MS4A1,
+#          CTLA4,
+#          CD19,
+#          IL10,
+#          CLEC12A,
+#          AURKA,
+#          MMP13,
+#          CLEC2B,
+#          CD58
+#          ) %>% 
+#   pivot_longer(cols = -c(id),
+#                names_to = "Genes" , 
+#                values_to = "log2fc")
+# 
+# logFC_treatment
 ```
 
 From the all_conditions select only normal tissues and
@@ -71,63 +80,137 @@ healthy <-
          )
 ```
 
+## Prepare healthy
+
+
 For the healthy, calculate mean expression level
 of each gene and do a logfold by this mean
+
+### Calculate mean 
 ```{r}
-
-# transpose
-healthy_transposed<- healthy %>%  
-  pivot_longer(cols = -id, names_to = "Genes") %>% 
+# transpose and add mean 
+healthy_dataset <- healthy %>%  
+  pivot_longer(cols = -id, 
+               names_to = "Genes",
+               values_to = "Reads") %>% 
   pivot_wider(names_from = id,
-              values_from = value) 
-
-# add mean and calculate logFC
-logFCs <- healthy_transposed %>% 
+              values_from = Reads) %>% 
   mutate(mean_expression =
            rowMeans(across(
              where(is.numeric)
            )
            )
-  ) %>% 
-  transmute(across(
-    !c(Genes, mean_expression),
+  ) 
+
+healthy_dataset
+```
+
+## Prepare baseline RA (RA_pre)
+
+
+```{r}
+pre_dataset <- treatment_dataset %>% 
+  select(id,
+         CD3D,
+         MS4A1,
+         CTLA4,
+         CD19,
+         IL10,
+         CLEC12A,
+         AURKA,
+         MMP13,
+         CLEC2B,
+         CD58
+         )  %>%
+  filter(grepl("RA_pre", id)) %>%
+  pivot_longer(cols = -c(id),
+               names_to = "Genes" ,
+               values_to = "Reads") %>% 
+  pivot_wider(names_from = id, values_from = Reads)
+
+pre_dataset
+```
+
+## Prepare post- tDMARD RA (RA_post)
+
+
+```{r}
+post_dataset <- treatment_dataset %>% 
+  select(id,
+         CD3D,
+         MS4A1,
+         CTLA4,
+         CD19,
+         IL10,
+         CLEC12A,
+         AURKA,
+         MMP13,
+         CLEC2B,
+         CD58
+         )  %>%
+  filter(grepl("RA_post", id)) %>%
+  pivot_longer(cols = -c(id),
+               names_to = "Genes" ,
+               values_to = "Reads") %>% 
+  pivot_wider(names_from = id, values_from = Reads) 
+
+post_dataset
+```
+
+## Join all
+
+```{r}
+all_dataset <-pre_dataset %>% 
+  full_join(post_dataset, by = "Genes") %>% 
+  full_join(healthy_dataset, by = "Genes")
+```
+## Calculate fold change
+
+**FC = Post t-DMARD RA/Normal_mean**
+
+**FC = Baseline RA/Normal_mean**
+
+**FC = Normal/Normal_mean**
+
+<span style="color: red;">*Currently stuck here, how to add a condition variable depended on id*</span>
+```{r}
+# calculate logFC
+only_logFCs <- all_dataset %>% 
+  transmute(
+    across(
+      !c(Genes, mean_expression),
     ~ log2(. + 1) - log2(mean_expression + 1)
-  )
+    )
   )
 
-# now combine the above and make it long 
-logFC_healthy <-
-  healthy_transposed %>% 
+# now combine the above, make it long and add condition variable
+all_logfc <-
+  all_dataset %>% 
   select(Genes) %>% 
-  bind_cols(logFCs) %>% 
+  bind_cols(only_logFCs) %>% 
   pivot_longer(cols = -Genes,
-               names_to = "id")
+               names_to = "id",
+               values_to = "logFC") #%>% 
+  # mutate(condition = case_when(
+  #   id = str_extract() ~ "RA baseline"
+  # )))
+  
 
-logFC_healthy
+
+
+all_logfc
 ```
 
-Preparing to bind the treatment and healthy logFCs datasets
-```{r}
-logFC_healthy <-
-  logFC_healthy %>% 
-  dplyr::rename(log2fc = value) %>% 
-  select(id, Genes, log2fc)
 
-logFC_healthy
-```
-Binding the two datasets
-```{r}
-all_logFCs <-
-  logFC_treatment %>% 
-  bind_rows(logFC_healthy)
-```
+
+
 
 Visualize
 ```{r}
-all_logFCs %>% 
-  ggplot(mapping = aes(
-    x = 
-  ))
-  
+# all_log %>% 
+#   ggplot(mapping = aes(
+#     x = 
+#   ))
+#   
 ```
 
