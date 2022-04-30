@@ -6,10 +6,11 @@
 
 # Load libraries ----------------------------------------------------------
 library("tidyverse")
-
+library("broom")
+library("DESeq2")
 
 # Define functions --------------------------------------------------------
-source(file = "R/99_project_functions.R")
+#source(file = "R/99_project_functions.R")
 
 
 # Load data ---------------------------------------------------------------
@@ -20,16 +21,14 @@ treatment_meta_raw <- read_tsv(file = "data/01_treatment_meta.tsv")
 
 # Wrangle data ------------------------------------------------------------
 
-# Large dataset
+## Large dataset
 
 # Count data
-
 large <- large_raw %>% 
   pivot_longer(cols = contains("tissue"), names_to = "id") %>% 
   pivot_wider(names_from = ...1, values_from = value)
 
 # Meta data
-
 large_meta <- large_meta_raw %>% 
   slice(1,9,10,11) %>% # Only take meaningful values
   select(-("!Sample_title")) %>% # Drop title column
@@ -45,19 +44,16 @@ large_meta <- large_meta_raw %>%
   select(id, disease, sex, age, acc_num) # Extract final columns
 
 # Join
-
 large_w_meta <- right_join(large_meta, large, by = "id")
 
-# Treatment dataset
+## Treatment dataset
 
 # Count data
-
 treatment <- treatment_raw %>% 
   pivot_longer(cols = starts_with("RA"), names_to = "id") %>% 
   pivot_wider(names_from = ...1, values_from = value)
 
 # Meta data
-
 treatment_meta <- treatment_meta_raw %>% 
   slice(1,9,10,12) %>% # Only take meaningful values
   select(-("!Sample_title")) %>% # Drop title column
@@ -79,12 +75,100 @@ treatment_meta <- treatment_meta_raw %>%
 
 
 # Join
-
 treatment_w_meta <- right_join(treatment_meta, treatment, by = "id")
 
+# Combine metadata
+combined_meta <- bind_rows(large_meta,treatment_meta)
+
+# Normalise data ------------------------------------------------------------
+
+# Wide data:
+large_no_meta_wide <- large_w_meta %>% 
+  select(-c(disease,sex,acc_num,age)) %>% 
+  pivot_longer(cols = -id, names_to = "gene") %>% 
+  pivot_wider(names_from = id, values_from = value)
+
+treatment_no_meta_wide <- treatment_w_meta %>%
+  select(-c(treatment,sex,age,disease_duration, acc_num)) %>% 
+  pivot_longer(cols = -id, names_to = "gene") %>% 
+  pivot_wider(names_from = id, values_from = value)
+
+# Combine wide data
+combined_wide <- treatment_no_meta_wide %>% 
+  inner_join(large_no_meta_wide, by = "gene")
+
+# Combined long:
+combined <- combined_wide %>% 
+  pivot_longer(cols = -gene, names_to = "id") %>% 
+  pivot_wider(names_from = gene, values_from = value)
+
+# Convert data to integers:
+combined_wide_integer <- 
+  combined_wide %>% 
+  mutate(across(where(is.numeric), ~ as.integer(.x)))
+
+# Remove row and column names, and normalize as matrix:
+
+
+## Using rlog() - EXTREMELY SLOW
+# rlog_counts <- combined_wide_integer %>% 
+#  select(-gene) %>% 
+#  as.matrix() %>% 
+#  unname() %>%
+#  DESeq2::rlog()
+
+vst_counts <- combined_wide_integer %>% 
+  select(-gene) %>% 
+  as.matrix() %>% 
+  unname() %>%
+  DESeq2::vst()
+
+# Add back row and column names:
+# rlog
+#colnames(rlog_counts) <- pull(combined, id)
+#rownames(rlog_counts) <- pull(combined_wide, gene)
+
+# vst
+colnames(vst_counts) <- pull(combined, id)
+rownames(vst_counts) <- pull(combined_wide, gene)
+
+
+# Convert normalised matrix to tibble:
+#rlog_complete <- rlog_counts %>% 
+#  as_tibble(rownames = "gene") %>% 
+#  pivot_longer(cols = -gene, names_to = "id") %>% 
+#  pivot_wider(names_from = gene, values_from = value)
+
+vst_complete <- vst_counts %>% 
+  as_tibble(rownames = "gene") %>% 
+  pivot_longer(cols = -gene, names_to = "id") %>% 
+  pivot_wider(names_from = gene, values_from = value)
+
+
+
 # Write data --------------------------------------------------------------
+# Seperate data sets:
 write_tsv(x = large_w_meta,
           file = "data/02_large_w_meta_clean.tsv")
 
 write_tsv(x = treatment_w_meta,
           file = "data/02_treatment_w_meta_clean.tsv")
+
+# Combined data sets:
+write_tsv(x = combined, 
+          file = "./data/02_combined.tsv")
+
+# Normalised data:
+
+# rlog
+#write_tsv(x = rlog_complete, 
+#          file = "./data/02_combined_rlog.tsv")
+
+# vst
+write_tsv(x = vst_complete, 
+          file = "./data/02_combined_vst.tsv")
+
+# Metadata
+
+write_tsv(x = combined_meta, 
+          file = "./data/02_combined_meta.tsv")
