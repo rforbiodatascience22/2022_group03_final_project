@@ -7,7 +7,6 @@
 # Load libraries ----------------------------------------------------------
 library("tidyverse")
 library("broom")
-library("DESeq2")
 
 # Define functions --------------------------------------------------------
 #source(file = "R/99_project_functions.R")
@@ -166,7 +165,7 @@ write_tsv(x = combined,
 
 # vst
 write_tsv(x = vst_complete, 
-          file = "./data/02_combined_vst.tsv")
+          file = "./data/02_combined_vst.tsv.gz")
 
 # Metadata
 
