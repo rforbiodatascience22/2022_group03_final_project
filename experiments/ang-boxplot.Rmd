@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Effect of treatment boxplots
+## Effect-of-treatment boxplots
 
 CD3D, MS4A1, CTLA4, CD19 -> where shown to go back to normal
 after treatment

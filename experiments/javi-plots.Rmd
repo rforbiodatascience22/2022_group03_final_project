@@ -18,8 +18,8 @@ library("gtools")
 
 # read datasets
 ```{r}
-large_dataset <- read_tsv(file = "../data/05_large_w_meta_clean.tsv")
-treatment_dataset <- read_tsv(file = "../data/06_treatment_w_meta_clean.tsv")
+large_dataset <- read_tsv(file = "../data/02_large_w_meta_clean.tsv")
+treatment_dataset <- read_tsv(file = "../data/02_treatment_w_meta_clean.tsv")
 ```
 
 # this does not work
