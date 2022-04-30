@@ -22,28 +22,24 @@ large_dataset <- read_tsv(file = "../data/02_large_w_meta_clean.tsv")
 treatment_dataset <- read_tsv(file = "../data/02_treatment_w_meta_clean.tsv")
 ```
 
-# this does not work
+# Joining data together (they work only with Normal tissue data and the treatment data)
+
 ```{r}
-pre_treatment <- treatment_dataset %>%
+normal_dataset_long <- large_dataset %>% 
+  filter(grepl("normal", id)) %>% 
+  select(-disease, -acc_num, -sex, -age) %>% 
+  pivot_longer(cols = -c(id),
+               names_to = "Genes" , 
+               values_to = "log2fc")
+
+all_data <- treatment_dataset %>% 
   select(-treatment, -sex, -age, -disease_duration, -acc_num) %>% 
-  filter(grepl("pre", id)) %>% 
-  mutate(id = str_sub(id, 8, -1))
-
-post_treatment <- treatment_dataset %>% 
-  select(-treatment, -sex, -age, -disease_duration, -acc_num) %>% 
-  filter(grepl("post", id)) %>% 
-  mutate(id = str_sub(id, 9, -1))
-
-fold_change_treatment <- post_treatment %>% 
-  select(-id)
-
+  pivot_longer(cols = -c(id),
+               names_to = "Genes" , 
+               values_to = "log2fc") %>% 
+  bind_rows(normal_dataset_long) 
 ```
 
-# Random exploration
-
-
-
-# PCA plots
 
 # Heatplots
 
@@ -71,7 +67,7 @@ logfold_long %>% filter(grepl("^AA", Genes)) %>%
                                    hjust = 1))
 ```
 ## Trying something different (genes important for T and/or B cell activation)
-
+need to find a way to sort them as I want
 ```{r}
 lf_treatment_tc_genes <- logfold_treatment %>% 
   select("id", "ADAM8", "BCL11B", "CCL5", "CD3E", "CD5", "CD8A", "CD8B", "EOMES", 
@@ -101,7 +97,8 @@ lf_treatment_tc_genes %>%
   
 ```
 
-## filtering significantly up/down expressed genes (log2fc > 2) 
+
+## filtering significantly up/down expressed genes (log2fc > 1.5) 
 I think we calculated the fold change backwards
 ```{r}
 transpose_logfold_treatment <- logfold_long %>% 
@@ -109,10 +106,10 @@ transpose_logfold_treatment <- logfold_long %>%
 
 selected_genes_treatment <- transpose_logfold_treatment %>%  
   mutate(mean_log2fc = rowMeans(across(where(is.numeric)))) %>% 
-  filter(mean_log2fc >= 2 | mean_log2fc <= -2)
+  filter(mean_log2fc >= 1.5 | mean_log2fc <= -1.5)
 
 selected_genes_treatment_long <- selected_genes_treatment %>% 
-  select(-mean_log2fc) %>% 
+  #select(-mean_log2fc) %>% 
   pivot_longer(cols = -c(Genes),
                names_to = "id" , 
                values_to = "log2fc")
@@ -133,6 +130,5 @@ selected_genes_treatment_long %>%
                                    hjust = 1))
 
 ```
-
 
 
