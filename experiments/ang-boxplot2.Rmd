@@ -236,7 +236,7 @@ selected_logfold %>%
     y = log2fc
   )
   ) +
-  geom_boxplot() +
+  geom_boxplot(outlier.size = .5) +
   geom_jitter(aes(colour = Type),
               size = 0.7
     )+
@@ -248,3 +248,10 @@ selected_logfold %>%
   theme(axis.text.x = element_text(angle = 45,
                                    hjust = 1)) 
 ```
+
+
+
+```{r}
+selected_logfold
+```
+
