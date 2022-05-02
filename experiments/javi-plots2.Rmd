@@ -244,3 +244,40 @@ aux_dataset %>%
 
 ```
 
+
+
+# Boxplots with logfolds
+
+```{r}
+selected_logfold <-
+  all_logfold %>% 
+  filter( 
+      Genes == "CD3D" 
+    | Genes == "MS4A1"
+    | Genes == "CTLA4"
+    | Genes == "CD19"
+    | Genes == "IL10"
+    | Genes == "CLEC12A"
+    | Genes == "AURKA"
+    | Genes == "MMP13"
+    | Genes == "CLEC2B"
+    | Genes == "CD58")
+
+selected_logfold %>% 
+  ggplot(mapping = aes(
+    x = Type,
+    y = log2fc,
+    colour = Type
+  )
+  ) +
+  geom_boxplot() +
+  geom_jitter()+
+  facet_wrap(vars(Genes), scales = 'free_y', nrow = 2) +
+  theme_bw() +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+   
+  theme(axis.text.x = element_text(angle = 45,
+                                   hjust = 1)) 
+```
+

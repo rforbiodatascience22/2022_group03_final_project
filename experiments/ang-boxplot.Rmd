@@ -190,10 +190,11 @@ all_logfc <-
   bind_cols(only_logFCs) %>% 
   pivot_longer(cols = -Genes,
                names_to = "id",
-               values_to = "logFC") #%>% 
-  # mutate(condition = case_when(
-  #   id = str_extract() ~ "RA baseline"
-  # )))
+               values_to = "logFC")
+
+# all_logfc%>% 
+#   select(id =starts_with("RA_pre")) %>% 
+#   mutate(condition = "RA t-DMARD")
   
 
 
@@ -202,6 +203,25 @@ all_logfc
 ```
 
 
+## From Javi!!
+```{r}
+selected_logfold <-
+  all_logfold %>% 
+  filter( 
+      Genes == "CD3D" 
+    | Genes == "MS4A1"
+    | Genes == "CTLA4"
+    | Genes == "CD19"
+    | Genes == "IL10"
+    | Genes == "CLEC12A"
+    | Genes == "AURKA"
+    | Genes == "MMP13"
+    | Genes == "CLEC2B"
+    | Genes == "CD58")
+
+selected_logfold
+
+```
 
 
 
