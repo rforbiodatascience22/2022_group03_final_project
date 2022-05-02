@@ -138,10 +138,159 @@ ggplot(data = mdl_plot, mapping = aes(x = estimate,
   geom_vline(xintercept = 0, linetype = 2)
 
 
+
+
+
+# -------------------------------------------------------------------------
+# -------------------------------------------------------------------------
+###### Batch effect. Combined dataset colored by sample.
+
+combined <- read_tsv(file = "data/02_combined_vst.tsv.gz") %>% 
+  filter(str_detect(id, "OA|AG|undiff", negate = TRUE))
+
+# Model data
+pca_fit <- combined %>%
+  select(-c(id)) %>%
+  prcomp(scale = TRUE)
+
+# Augment
+
+aug <- combined %>% mutate(sample = str_detect(id, "RA_p"))
+
+# Visualise data
+
+pca_fit %>%
+  augment(aug) %>% 
+  ggplot(mapping = aes(x = .fittedPC1, 
+                       y =.fittedPC3,
+                       color = sample)) +
+  geom_point(alpha = 0.5) +
+  theme_minimal() +
+  theme(legend.position = 'bottom') +
+  labs(color = "Sample")
+
+# -------------------------------------------------------------------------
+# -------------------------------------------------------------------------
+###### Fix batch effect.
+
+combined <- read_tsv(file = "data/02_combined_vst.tsv.gz") %>% 
+  filter(str_detect(id, "OA|AG|undiff", negate = TRUE))
+
+# Model data
+pca_fit <- combined %>%
+  select(-c(id)) %>%
+  prcomp()
+
+# Augment
+
+aug <- combined %>% mutate(sample = str_detect(id, "RA_p"))
+
+# Visualise data
+
+pca_fit %>%
+  augment(aug) %>% 
+  ggplot(mapping = aes(x = .fittedPC1, 
+                       y =.fittedPC3,
+                       color = sample)) +
+  geom_point(alpha = 0.5) +
+  theme_minimal() +
+  theme(legend.position = 'bottom') +
+  labs(color = "Sample")
+
+
+
+# -------------------------------------------------------------------------
+# -------------------------------------------------------------------------
+
 # -------------------------------------------------------------------------
 ###### Make linear model. Predict RA_tissue from normal (Large set):
 
-vst_complete <- read_tsv(file = "./data/02_combined_vst.tsv")
+# Filter heavily, and subsample RA to 28
+combined <- read_tsv(file = "./data/02_combined.tsv") %>% 
+  filter(str_detect(id, "RA_tissue|normal_tissue"))
+
+combined_filtered_wide <- combined %>% 
+  pivot_longer(cols = -id, names_to = "gene") %>% 
+  pivot_wider(names_from = id, values_from = value) %>% 
+  rowwise() %>% 
+  filter(sum(c_across(-gene)) > 200) %>% 
+  ungroup()
+
+combined_filtered_wide_vst <- combined_filtered_wide %>% 
+  mutate(across(where(is.numeric), ~ as.integer(.x))) %>% 
+  select(-gene) %>% 
+  as.matrix() %>% 
+  unname() %>%
+  DESeq2::vst()
+
+colnames(combined_filtered_wide_vst) <- pull(combined, id)
+rownames(combined_filtered_wide_vst) <- pull(combined_filtered_wide, gene)
+
+
+combined_vst_long <- combined_filtered_wide_vst %>% 
+  as_tibble(rownames = "gene") %>% 
+  pivot_longer(cols = -gene, names_to = "id") %>% 
+  pivot_wider(names_from = gene, values_from = value)
+
+View(combined_vst_long)
+
+# Subsample RA_tissue
+set.seed(18)
+RA_tissue <- combined_vst_long %>% 
+  filter(str_detect(id, "RA_tissue")) %>%
+  sample_n(28)
+
+
+# Combine with healthy tissue:
+RA_vs_normal <- combined_vst_long %>% 
+  filter(str_detect(id, "normal")) %>% 
+  bind_rows(RA_tissue) %>% 
+  mutate(response = if_else(str_detect(id, "RA"), 1, 0))
+
+
+# Create long form for modelling:
+long <- RA_vs_normal %>% 
+  select(-id) %>% 
+  pivot_longer(cols = -response, 
+               names_to = "gene", 
+               values_to = "log_expr")
+
+# Nest data:
+nested <- long %>% 
+  group_by(gene) %>% 
+  nest() %>% 
+  ungroup()
+
+# Model:
+mdl_data <- nested %>% mutate(mdl = map(data, 
+                                        ~glm(response ~ log_expr, 
+                                             data = ., 
+                                             family = binomial(link = "logit"))))
+# Tidy:
+mdl_tidy <- mdl_data %>% 
+  mutate(tidy = map(mdl, tidy, conf.int = TRUE)) %>% 
+  unnest(tidy)
+
+
+
+# Extract only coefficient:
+mdl_coef <- mdl_tidy %>% 
+  filter(term == "log_expr") %>% 
+  select(-c(data,mdl))
+
+write_tsv(mdl_coef, file = "experiments/model_coeff.tsv")
+
+# Plot
+View(mdl_tidy)
+# Gene on x, coeff on y:
+
+
+
+
+# -------------------------------------------------------------------------
+###### Make linear model. Predict RA_tissue from normal (Large set):
+
+vst_complete <- read_tsv(file = "./data/02_combined_vst.tsv.gz")
 
 RA_vs_normal <- vst_complete %>% 
   filter(str_detect(id, "RA_tissue|normal_tissue")) %>%  
