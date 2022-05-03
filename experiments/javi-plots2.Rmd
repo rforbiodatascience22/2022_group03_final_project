@@ -19,10 +19,25 @@ library("tidyverse")
 # Loading Data
 
 ```{r}
-large_dataset <- read_tsv(file = "../data/02_large_w_meta_clean.tsv")
-treatment_dataset <- read_tsv(file = "../data/02_treatment_w_meta_clean.tsv")
-logfold_treatment <- read_tsv(file = "../data/03_treatment_log2fc.tsv")
+#large_dataset <- read_tsv(file = "../data/02_large_w_meta_clean.tsv")
+#treatment_dataset <- read_tsv(file = "../data/02_treatment_w_meta_clean.tsv")
+#logfold_treatment <- read_tsv(file = "../data/03_treatment_log2fc.tsv")
+combined_meta <- read_tsv(file = "../data/02_combined_meta.tsv")
+combined_vst <- read_tsv(file = "../data/02_combined_vst.tsv.gz")
+combined_dataset <- read_tsv(file = "../data/02_combined.tsv")
 ```
+
+# Filter out combined data, keeping normal, pre, post and early RA
+```{r}
+normalized_dataset <- combined_vst %>% 
+  filter(grepl("normal", id) | grepl("RA_", id)) %>% 
+  pivot_longer(cols = -c(id),
+               names_to = "Genes" , 
+               values_to = "Reads") %>% 
+  pivot_wider(names_from = id, values_from = Reads)
+
+```
+
 
 # Fold change normal with normal mean 
 Using the mean of normal patients expression for each gene (Is this really 
@@ -33,119 +48,59 @@ selecting only normal samples, transposing the dataset, calculating the mean
 for each gene
 
 ```{r}
-normal_dataset <- large_dataset %>% 
-  filter(grepl("normal", id)) %>% 
-  select(-disease, -acc_num, -sex, -age) %>% 
-  pivot_longer(cols = -c(id),
-               names_to = "Genes" , 
-               values_to = "Reads") %>% 
-  pivot_wider(names_from = id, values_from = Reads) %>% 
-  mutate(mean_reads = rowMeans(across(where(is.numeric)))) 
+normal_mean <- normalized_dataset %>% 
+  select(Genes, starts_with("normal")) %>% 
+  mutate(mean_reads = rowMeans(across(where(is.numeric)))) %>% 
+  select(Genes, mean_reads)
+
+normalized_dataset <- normalized_dataset %>% 
+  left_join(normal_mean, by = "Genes")
 ```
 
 ## log fold change (using Mads code) 
 
-**FC = Normal/Normal_mean**
+**FC = sample/Normal_mean**
 
 ```{r}
-logfold_normal <- normal_dataset %>% 
-  rowwise() %>% 
-  mutate("Normal_2fc_1" = log2(normal_tissue_1+1)-log2(mean_reads+1),
-         "Normal_2fc_2" = log2(normal_tissue_2+1)-log2(mean_reads+1),
-         "Normal_2fc_3" = log2(normal_tissue_3+1)-log2(mean_reads+1),
-         "Normal_2fc_4" = log2(normal_tissue_4+1)-log2(mean_reads+1),
-         "Normal_2fc_5" = log2(normal_tissue_5+1)-log2(mean_reads+1),
-         "Normal_2fc_6" = log2(normal_tissue_6+1)-log2(mean_reads+1),
-         "Normal_2fc_7" = log2(normal_tissue_7+1)-log2(mean_reads+1),
-         "Normal_2fc_8" = log2(normal_tissue_8+1)-log2(mean_reads+1),
-         "Normal_2fc_9" = log2(normal_tissue_9+1)-log2(mean_reads+1),
-         "Normal_2fc_10" = log2(normal_tissue_10+1)-log2(mean_reads+1),
-         "Normal_2fc_11" = log2(normal_tissue_11+1)-log2(mean_reads+1),
-         "Normal_2fc_12" = log2(normal_tissue_12+1)-log2(mean_reads+1),
-         "Normal_2fc_13" = log2(normal_tissue_13+1)-log2(mean_reads+1),
-         "Normal_2fc_14" = log2(normal_tissue_14+1)-log2(mean_reads+1),
-         "Normal_2fc_15" = log2(normal_tissue_15+1)-log2(mean_reads+1),
-         "Normal_2fc_16" = log2(normal_tissue_16+1)-log2(mean_reads+1),
-         "Normal_2fc_17" = log2(normal_tissue_17+1)-log2(mean_reads+1),
-         "Normal_2fc_18" = log2(normal_tissue_18+1)-log2(mean_reads+1),
-         "Normal_2fc_19" = log2(normal_tissue_19+1)-log2(mean_reads+1),
-         "Normal_2fc_20" = log2(normal_tissue_20+1)-log2(mean_reads+1),
-         "Normal_2fc_21" = log2(normal_tissue_21+1)-log2(mean_reads+1),
-         "Normal_2fc_22" = log2(normal_tissue_22+1)-log2(mean_reads+1),
-         "Normal_2fc_23" = log2(normal_tissue_23+1)-log2(mean_reads+1),
-         "Normal_2fc_24" = log2(normal_tissue_24+1)-log2(mean_reads+1),
-         "Normal_2fc_25" = log2(normal_tissue_25+1)-log2(mean_reads+1),
-         "Normal_2fc_26" = log2(normal_tissue_26+1)-log2(mean_reads+1),
-         "Normal_2fc_27" = log2(normal_tissue_27+1)-log2(mean_reads+1),
-         "Normal_2fc_28" = log2(normal_tissue_28+1)-log2(mean_reads+1)) %>% 
-  select(-starts_with("normal_t"), -mean_reads) %>% 
-  pivot_longer(cols = starts_with("Normal_2fc"), names_to = "id") %>% 
-  pivot_wider(names_from = "Genes", values_from = "value")
-```
+only_logFCs <- normalized_dataset %>% 
+  transmute(
+    across(
+      !c(Genes, mean_reads),
+    ~ log2(. + 1) - log2(mean_reads + 1)
+    )
+  )
 
-# Fold change normal with baseline RA (RA_pre)
+combined_logfc <- normalized_dataset %>% 
+  select(Genes) %>% 
+  bind_cols(only_logFCs) %>% 
+  pivot_longer(cols = -c(Genes), names_to = "id", values_to = "logfc") %>% 
+  pivot_wider(names_from = "Genes", values_from = "logfc") %>% 
+  left_join(combined_meta, by = "id")
 
-## Join RA baseline and normal data
-```{r}
-normal_mean <- normal_dataset %>% 
-  select(Genes, mean_reads) %>% 
-  pivot_longer(cols = -c(Genes),
-               names_to = "id" , 
-               values_to = "Reads") %>% 
-  relocate(id, .before = Genes)
+combined_logfc_ready <- combined_logfc %>% 
+  filter(is.na(disease) | disease == "Normal" | disease == "Rheumatoid arthritis (established)") %>% 
+  mutate(tag = case_when(
+      treatment == TRUE ~ "RA post tDMARD",
+      treatment == FALSE ~ "RA baseline",
+      disease == "Normal" ~ "Normal",
+      disease == "Rheumatoid arthritis (established)" ~ "RA established"
+      )) %>% 
+  relocate(tag, .after = id)
 
-aux_dataset <- treatment_dataset %>% 
-  select(-treatment, -sex, -age, -acc_num, -disease_duration) %>% 
-  filter(grepl("RA_pre", id)) %>% 
-  pivot_longer(cols = -c(id),
-               names_to = "Genes" , 
-               values_to = "Reads") %>% 
-  bind_rows(normal_mean) %>% 
-  pivot_wider(names_from = id, values_from = Reads)
-
-```
-
-## log fold change (using Mads code) 
-
-**FC = Baseline_RA/Normal**
-
-```{r}
-logfold_RA <- aux_dataset %>% 
-  rowwise() %>% 
-  mutate("RAb_2fc_1" = log2(RA_pre_1+1)-log2(mean_reads+1),
-         "RAb_2fc_2" = log2(RA_pre_2+1)-log2(mean_reads+1),
-         "RAb_2fc_3" = log2(RA_pre_3+1)-log2(mean_reads+1),
-         "RAb_2fc_4" = log2(RA_pre_4+1)-log2(mean_reads+1),
-         "RAb_2fc_5" = log2(RA_pre_5+1)-log2(mean_reads+1),
-         "RAb_2fc_6" = log2(RA_pre_6+1)-log2(mean_reads+1),
-         "RAb_2fc_7" = log2(RA_pre_7+1)-log2(mean_reads+1),
-         "RAb_2fc_8" = log2(RA_pre_8+1)-log2(mean_reads+1),
-         "RAb_2fc_9" = log2(RA_pre_9+1)-log2(mean_reads+1),
-         "RAb_2fc_10" = log2(RA_pre_10+1)-log2(mean_reads+1),
-         "RAb_2fc_11" = log2(RA_pre_11+1)-log2(mean_reads+1),
-         "RAb_2fc_12" = log2(RA_pre_12+1)-log2(mean_reads+1),
-         "RAb_2fc_13" = log2(RA_pre_13+1)-log2(mean_reads+1),
-         "RAb_2fc_14" = log2(RA_pre_14+1)-log2(mean_reads+1),
-         "RAb_2fc_15" = log2(RA_pre_15+1)-log2(mean_reads+1),
-         "RAb_2fc_16" = log2(RA_pre_16+1)-log2(mean_reads+1),
-         "RAb_2fc_17" = log2(RA_pre_17+1)-log2(mean_reads+1),
-         "RAb_2fc_18" = log2(RA_pre_18+1)-log2(mean_reads+1),
-         "RAb_2fc_19" = log2(RA_pre_19+1)-log2(mean_reads+1)) %>% 
-  select(-starts_with("RA_p"), -mean_reads) %>% 
-  pivot_longer(cols = starts_with("RAb_2fc"), names_to = "id") %>% 
-  pivot_wider(names_from = "Genes", values_from = "value")
+combined_logfc_ready
 
 ```
 
 # Heatplot differential expression between Baseline RA and normal values
 
 ```{r}
-logfold_RA_long <- logfold_RA %>% 
-  pivot_longer(cols = -c(id),
+combined_logfc_ready_long <- combined_logfc_ready %>% 
+  select(-treatment, -disease_duration, -disease, -acc_num) %>% 
+  pivot_longer(cols = -c(id, tag, sex, age),
                names_to = "Genes" , 
                values_to = "log2fc")
 
-logfold_RA_long %>% filter(log2fc >= 8 | log2fc <= -8) %>% 
+combined_logfc_ready_long %>% filter(log2fc >= 1 | log2fc <= -1) %>% 
   ggplot(mapping = aes(x = id,
                        y = Genes,
                        fill = log2fc )) +
@@ -162,50 +117,19 @@ logfold_RA_long %>% filter(log2fc >= 8 | log2fc <= -8) %>%
 
 # recreating Figure 2.B treatment paper
 
-## Making tables longer
-```{r}
-logfold_normal_long <- logfold_normal %>% 
-  mutate(Type = "Normal") %>% 
-  relocate(Type, .after = id) %>% 
-  pivot_longer(cols = -c(id, Type),
-               names_to = "Genes" , 
-               values_to = "log2fc")
-
-logfold_RA_long <- logfold_RA%>% 
-  mutate(Type = "RA baseline") %>% 
-  relocate(Type, .after = id) %>% 
-  pivot_longer(cols = -c(id, Type),
-               names_to = "Genes" , 
-               values_to = "log2fc")
-
-logfold_treatment_long <- logfold_treatment%>% 
-  mutate(Type = "RA post-tDMARD") %>% 
-  relocate(Type, .after = id) %>% 
-  pivot_longer(cols = -c(id, Type),
-               names_to = "Genes" , 
-               values_to = "log2fc")
-```
-
-## joining them 
-
-```{r}
-all_logfold <- logfold_normal_long %>% 
-  bind_rows(logfold_RA_long) %>% 
-  bind_rows(logfold_treatment_long)
-```
-
 ## Heatmap all genes starting with AA 
 later decide how to filter: 
 - which threshold is significant? 
 - does the fold change of the post treatment expression has to be according to the normal mean or to the pre treatment for this plot?
 
 ```{r}
-all_logfold %>% filter(grepl("^AA", Genes)) %>% 
+combined_logfc_ready_long %>% filter(tag == "RA established") %>% 
+  filter(log2fc >= 1 | log2fc <= -1) %>% 
   ggplot(mapping = aes(x = id,
                        y = Genes,
                        fill = log2fc )) +
   geom_tile(alpha = 0.5) +
-  facet_wrap(~ Type, scales = 'free_x') +
+  facet_wrap(~ tag, scales = 'free_x', ncol =) +
   scale_fill_gradient2(low = "blue",
                         mid = "white",
                         high = "red",
@@ -242,5 +166,42 @@ aux_dataset %>%
         axis.text.x = element_text(angle = 45,
                                    hjust = 1)) 
 
+```
+
+
+
+# Boxplots with logfolds
+
+```{r}
+selected_logfold <-
+  all_logfold %>% 
+  filter( 
+      Genes == "CD3D" 
+    | Genes == "MS4A1"
+    | Genes == "CTLA4"
+    | Genes == "CD19"
+    | Genes == "IL10"
+    | Genes == "CLEC12A"
+    | Genes == "AURKA"
+    | Genes == "MMP13"
+    | Genes == "CLEC2B"
+    | Genes == "CD58")
+
+selected_logfold %>% 
+  ggplot(mapping = aes(
+    x = Type,
+    y = log2fc,
+    colour = Type
+  )
+  ) +
+  geom_boxplot() +
+  geom_jitter()+
+  facet_wrap(vars(Genes), scales = 'free_y', nrow = 2) +
+  theme_bw() +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+   
+  theme(axis.text.x = element_text(angle = 45,
+                                   hjust = 1)) 
 ```
 
