@@ -10,26 +10,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 ```{r}
-data8 <- read_tsv("data/02_large_w_meta_clean.tsv")
+data8 <- read_tsv("../data/02_large_w_meta_clean.tsv")
     
 data8 %>% 
   ggplot(aes(age, fill=disease)) +
@@ -65,17 +49,22 @@ density <- data8 %>%
 histogram <- data8 %>% 
   drop_na(sex) %>% 
   ggplot(aes(disease, fill=sex)) +
+  theme(axis.text.x = element_text(angle = 90)) +
   geom_bar(alpha=0.4)
 
 histogram +
   facet_wrap(vars(sex)) +
-  theme(strip.text.y = element_text(angle = 45), 
-        axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+  scale_x_discrete(guide = guide_axis(angle = 90))+
+  theme_minimal()
 
 density + 
    geom_vline(data = means, aes(xintercept=Mean), size=0.5, color="red") +
    geom_label(data=means, size=2.5, 
-             aes(x=Mean, y=5, label=paste0(Mean))) +
-   facet_wrap(vars(disease), ncol=1)
+             aes(x=Mean, y=0.015, label=paste0(Mean))) +
+  ylab("Count")+
+  xlab("Age of patients")+
+  guides(fill=guide_legend(title="Condition"))+
+  facet_wrap(vars(disease), ncol=1) +
+  theme_minimal()
 ```
 
