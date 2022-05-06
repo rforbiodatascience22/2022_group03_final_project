@@ -2,11 +2,15 @@
 title: "Rthritis"
 author: "the best group EVER"
 date: '2022-05-06'
-output: ioslides_presentation
+output: 
+  ioslides_presentation:
+    widescreen: true
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE, 
+                      dev.args=list(bg="transparent"))
 ```
 
 ## 1. Introduction
@@ -26,43 +30,43 @@ summary(cars)
 
 ## 4. Result 2: First look at data: Patient distribution. (Daniel)
 
-```{r pressure}
+```{r}
 plot(pressure)
 ```
 
 ## 5. Result 3: Exploration: PCA plots and clustering (Klara)
 
-```{r pressure}
+```{r}
 plot(pressure)
 ```
   
 ## 6. Result 4: Differential expression: Log2fold changes (Mads)
 
-```{r pressure}
+```{r}
 plot(pressure)
 ```
 
 ## 7. Result 5: Heatmaps (Javi)
 
-```{r pressure}
+```{r}
 plot(pressure)
 ```
 
 ## 8. Result 6: Modelling: Logistic regression (Angiliki)
 
-```{r pressure}
+```{r}
 plot(pressure)
 ```
 
 ## 9. Extra ??
 
-```{r pressure}
+```{r}
 plot(pressure)
 ```
 
 ## 10. Discussion + conclusion
 
-```{r pressure}
+```{r}
 plot(pressure)
 ```
 
