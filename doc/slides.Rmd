@@ -9,25 +9,58 @@ output: ioslides_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## R Markdown
+## 1. Introduction
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Why we wanted to look at arthritis, what we wanted to find out, how we were going to do it (in very broad terms), bla bla bla bla.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+## 2. Materials and methods
 
-## Slide with Bullets
+Explain the dataset and articles
+Explain the order we did things
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-## Slide with R Output
+## 3. Result 1: Tidy datasets: Before vs. after.
 
 ```{r cars, echo = TRUE}
 summary(cars)
 ```
 
-## Slide with Plot
+## 4. Result 2: First look at data: Patient distribution. (Daniel)
+
+```{r pressure}
+plot(pressure)
+```
+
+## 5. Result 3: Exploration: PCA plots and clustering (Klara)
+
+```{r pressure}
+plot(pressure)
+```
+  
+## 6. Result 4: Differential expression: Log2fold changes (Mads)
+
+```{r pressure}
+plot(pressure)
+```
+
+## 7. Result 5: Heatmaps (Javi)
+
+```{r pressure}
+plot(pressure)
+```
+
+## 8. Result 6: Modelling: Logistic regression (Angiliki)
+
+```{r pressure}
+plot(pressure)
+```
+
+## 9. Extra ??
+
+```{r pressure}
+plot(pressure)
+```
+
+## 10. Discussion + conclusion
 
 ```{r pressure}
 plot(pressure)
@@ -35,4 +68,5 @@ plot(pressure)
 
 ## Goodbye- slide
 
-:)    :)    
+
+
