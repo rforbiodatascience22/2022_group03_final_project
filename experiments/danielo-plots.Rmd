@@ -76,6 +76,6 @@ density +
    geom_vline(data = means, aes(xintercept=Mean), size=0.5, color="red") +
    geom_label(data=means, size=2.5, 
              aes(x=Mean, y=5, label=paste0(Mean))) +
-   facet_wrap(vars(disease), ncol=1) #treatment cohort
+   facet_wrap(vars(disease), ncol=1)
 ```
 
