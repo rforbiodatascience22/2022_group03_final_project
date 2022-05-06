@@ -19,9 +19,7 @@ library("tidyverse")
 # Loading Data
 
 ```{r}
-#large_dataset <- read_tsv(file = "../data/02_large_w_meta_clean.tsv")
-#treatment_dataset <- read_tsv(file = "../data/02_treatment_w_meta_clean.tsv")
-#logfold_treatment <- read_tsv(file = "../data/03_treatment_log2fc.tsv")
+logfold_treatment <- read_tsv(file = "../data/03_treatment_log2fc.tsv")
 combined_meta <- read_tsv(file = "../data/02_combined_meta.tsv")
 combined_vst <- read_tsv(file = "../data/02_combined_vst.tsv.gz")
 combined_dataset <- read_tsv(file = "../data/02_combined.tsv")
@@ -36,6 +34,7 @@ normalized_dataset <- combined_vst %>%
                values_to = "Reads") %>% 
   pivot_wider(names_from = id, values_from = Reads)
 
+normalized_dataset
 ```
 
 
@@ -53,8 +52,12 @@ normal_mean <- normalized_dataset %>%
   mutate(mean_reads = rowMeans(across(where(is.numeric)))) %>% 
   select(Genes, mean_reads)
 
+normal_mean
+
 normalized_dataset <- normalized_dataset %>% 
   left_join(normal_mean, by = "Genes")
+
+normalized_dataset
 ```
 
 ## log fold change (using Mads code) 
@@ -77,7 +80,9 @@ combined_logfc <- normalized_dataset %>%
   pivot_wider(names_from = "Genes", values_from = "logfc") %>% 
   left_join(combined_meta, by = "id")
 
-combined_logfc_ready <- combined_logfc %>% 
+combined_logfc
+
+combined_logfc_meta <- combined_logfc %>% 
   filter(is.na(disease) | disease == "Normal" | disease == "Rheumatoid arthritis (established)") %>% 
   mutate(tag = case_when(
       treatment == TRUE ~ "RA post tDMARD",
@@ -85,26 +90,46 @@ combined_logfc_ready <- combined_logfc %>%
       disease == "Normal" ~ "Normal",
       disease == "Rheumatoid arthritis (established)" ~ "RA established"
       )) %>% 
-  relocate(tag, .after = id)
+  select(-treatment, -disease_duration, -disease, -acc_num) %>% 
+  relocate(tag, .after = id) %>% 
+  relocate(sex, .after = tag) %>% 
+  relocate(age, .after = sex)
+  
 
-combined_logfc_ready
+combined_logfc_meta
 
 ```
 
-# Heatplot differential expression between Baseline RA and normal values
 
+# selecting genes from RA stablished (mean logfc ranges between 0.8 and -0.8)
 ```{r}
-combined_logfc_ready_long <- combined_logfc_ready %>% 
-  select(-treatment, -disease_duration, -disease, -acc_num) %>% 
-  pivot_longer(cols = -c(id, tag, sex, age),
+selected_genes <- combined_logfc_meta %>% 
+  filter(tag == "RA established") %>% 
+  select(-age, -sex, -tag) %>% 
+  pivot_longer(cols = -c(id),
                names_to = "Genes" , 
-               values_to = "log2fc")
+               values_to = "logfc") %>% 
+  pivot_wider(names_from = id, values_from = logfc) %>% 
+  mutate(RA_mean = rowMeans(across(where(is.numeric)))) %>% 
+  relocate(RA_mean, .after = Genes) %>% 
+  filter(RA_mean > 0.55 | RA_mean < -0.55) %>% 
+  pull(Genes)
 
-combined_logfc_ready_long %>% filter(log2fc >= 1 | log2fc <= -1) %>% 
+selected_genes
+
+combined_logfc_selected <- combined_logfc_meta %>% 
+  select(id, tag, any_of(selected_genes))
+
+combined_logfc_selected %>% 
+  filter(tag == "Normal" | tag == "RA baseline" | tag == "RA post tDMARD") %>% 
+  pivot_longer(cols = -c(id, tag),
+               names_to = "Genes" , 
+               values_to = "logfc") %>% 
   ggplot(mapping = aes(x = id,
                        y = Genes,
-                       fill = log2fc )) +
+                       fill = logfc )) +
   geom_tile(alpha = 0.5) +
+  facet_wrap(~ tag, scales = 'free_x', ncol =) +
   scale_fill_gradient2(low = "blue",
                         mid = "white",
                         high = "red",
@@ -112,8 +137,30 @@ combined_logfc_ready_long %>% filter(log2fc >= 1 | log2fc <= -1) %>%
   theme_classic(base_size = 8) +
   theme(legend.position = "bottom",
         axis.text.x = element_text(angle = 45,
-                                   hjust = 1)) 
+                                   hjust = 1))
+  
+
+combined_logfc_selected %>% 
+  filter(tag == "Normal" | tag == "RA established") %>% 
+  pivot_longer(cols = -c(id, tag),
+               names_to = "Genes" , 
+               values_to = "logfc") %>% 
+  ggplot(mapping = aes(x = id,
+                       y = Genes,
+                       fill = logfc )) +
+  geom_tile(alpha = 0.5) +
+  facet_wrap(~ tag, scales = 'free_x', ncol =) +
+  scale_fill_gradient2(low = "blue",
+                        mid = "white",
+                        high = "red",
+                        midpoint = 0) +
+  theme_classic(base_size = 8) +
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 45,
+                                   hjust = 1))
+  
 ```
+
 
 # recreating Figure 2.B treatment paper
 
