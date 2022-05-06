@@ -7,12 +7,12 @@ source(file = "R/99_project_functions.R")
 
 
 # Load data ---------------------------------------------------------------
-nrmlzd_data <- read_tsv(file = "data/02_combined_vst.tsv.gz")
+vst_data <- read_tsv(file = "data/02_combined_vst.tsv.gz")
 
 
 # Wrangle data ------------------------------------------------------------
-nrmlzd_data_long <-
-  nrmlzd_data %>% 
+vst_data_long <-
+  vst_data %>% 
   select(id,
          CD3D,
          MS4A1,
@@ -48,7 +48,7 @@ nrmlzd_data_long <-
 
 # Boxplot with all the conditions (both long and treatment data)
 allcond_sele_genes <-
-  nrmlzd_data_long %>% 
+  vst_data_long %>% 
   ggplot(mapping = aes(
     x = condition,
     y = expression_level
@@ -71,7 +71,7 @@ allcond_sele_genes <-
 
 # Boxplot of only treatment and normal data
 drug_sele_genes <-
-  nrmlzd_data_long %>% 
+  vst_data_long %>% 
   filter(condition == "RA baseline" 
          | condition == "RA post-tDMARD"
          | condition == "Normal"
@@ -103,5 +103,3 @@ ggsave("06_boxp_sele_genes_allcond.png",
 ggsave("06_bxpl_sele_genes_drug.png",
        plot = drug_sele_genes,
        path = "/cloud/project/results")
-
-

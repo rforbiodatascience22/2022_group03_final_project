@@ -14,7 +14,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library("tidyverse")
 library("ggridges")
 library("viridisLite")
-library("viridis")
 ```
 
 #### Loading data
@@ -38,7 +37,7 @@ long %>%
 
 ```{r}
 long %>% 
-  select(1:4) %>% 
+  select(id, disease, sex, age) %>% 
   ggplot(mapping = aes(
     x = disease, fill = sex)
     )+
@@ -112,7 +111,7 @@ drug %>%
 geom_bar(position="dodge") +
   theme_minimal() + 
   scale_fill_viridis_d(alpha = 0.8) +
-  labs(title = "Sex participation per condition") +
+  labs(title = "Sex participation in treatment study") +
   xlab("")
 ```
 
@@ -135,7 +134,7 @@ drug %>%
   drop_na(age) %>% 
   ggplot(mapping = aes(x = age, fill = disease) ) +
   geom_density() +
-  facet_wrap(vars(disease) , ncol = 1) +
+  facet_wrap(vars(disease), ncol = 1) +
   scale_fill_viridis_d(alpha = 0.5) +
   theme(legend.position="none") +
   labs(title = "Age distribution per condition")
@@ -179,7 +178,8 @@ drug %>%
   ggplot(mapping = aes(x = sex, y = age, fill = sex)) + 
   geom_violin(aes(colour = sex), scale = "count", alpha = 0.8) +
   geom_boxplot(width=0.1, color="grey", alpha=0.2) +
-  geom_jitter( width = 0.1 )+
+  geom_jitter( width = 0.1, size = 0.3 ) +
+  theme_minimal() +
   scale_fill_viridis(discrete = TRUE) +
   facet_wrap(vars(disease)) 
   
