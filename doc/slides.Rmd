@@ -5,6 +5,7 @@ date: '2022-05-06'
 output: 
   ioslides_presentation:
     widescreen: true
+    logo: Rthritis001.png
 ---
 
 ```{r setup, include=FALSE}
@@ -12,14 +13,14 @@ knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE,
                       warning = FALSE,
                       dev.args=list(bg="transparent"))
-knitr::opts_knit$set(root.dir = "..")
 ```
 
-```{r libraries, echo = TRUE}
+```{r libraries}
 library("tidyverse")
 ```
 
 ## 1. Introduction
+
 
 Why we wanted to look at arthritis, what we wanted to find out, how we were going to do it (in very broad terms), bla bla bla bla.
 
@@ -37,20 +38,20 @@ summary(cars)
 ## 4. Results 1: Exploration of Metadata (Klara)
 
 ```{r}
-plot(pressure)
+knitr::include_graphics('../pcas_final.png')
 ```
 
 ## 5. Results 2: PCA and clusters (Klara) 
 
-```{r}
-plot(pressure)
+```{r, out.width='900px'}
+knitr::include_graphics('../results/pcas.png')
 ```
-  
+
 ---
 
 ```{r, fig.dim=c(10,6)}
-all_logfold <- read_tsv(file = "data/03_combined_log2fc.tsv")
-diff_expr_genes <- read_tsv(file = "data/08_diff_expr_genes.tsv")
+all_logfold <- read_tsv(file = "../data/03_combined_log2fc.tsv")
+diff_expr_genes <- read_tsv(file = "../data/08_diff_expr_genes.tsv")
 
 all_logfold %>% 
   left_join(diff_expr_genes, by = "gene") %>%
