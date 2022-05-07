@@ -39,7 +39,7 @@ diff_expr_genes <- over_expr %>% bind_rows(under_expr)
 
 # Visualise data ----------------------------------------------------------
 
-all_logfold %>% 
+log_plot <- all_logfold %>% 
   left_join(diff_expr_genes, by = "gene") %>%
   mutate(differentiation = fct_relevel(differentiation, 
                                        c("Healthy vs. Pre treatment",
@@ -54,7 +54,7 @@ all_logfold %>%
   scale_color_manual(values = c("black", "dodgerblue3"), na.translate = F) +
   scale_fill_manual(values = c("under" = "brown1", "over" = "chartreuse"), na.translate = F) +
   theme_minimal(base_family = "Avenir",
-                base_size = 12) +
+                base_size = 10) +
   labs(x = "Gene", 
        y = "log2 Fold Change",
        fill = "Differential expression",
@@ -72,4 +72,5 @@ all_logfold %>%
 # List of differentially expressed genes:
 write_tsv(x = diff_expr_genes,
           file = "data/08_diff_expr_genes.tsv")
-ggsave(...)
+# Save plot
+ggsave(plot = log_plot, filename = "results/diff_expr.png", width = 8, height = 6, units = "in")
