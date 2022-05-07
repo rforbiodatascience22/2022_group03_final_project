@@ -57,7 +57,7 @@ histogram +
   scale_x_discrete(guide = guide_axis(angle = 90))+
   theme_minimal()
 
-density + 
+age_distribution_plot <- density + 
    geom_vline(data = means, aes(xintercept=Mean), size=0.5, color="red") +
    geom_label(data=means, size=2.5, 
              aes(x=Mean, y=0.015, label=paste0(Mean)),
@@ -68,9 +68,10 @@ density +
   facet_wrap(vars(disease), ncol=1) +
   theme_minimal()
 
-library(png)
-front_path <- "../project/Rthritis.001.png"
-front <- readPNG(front_path, native = TRUE, info = TRUE)
-front
+ggsave('../results/age_distr_plot.png', 
+       age_distribution_plot, 
+       width = 8, 
+       height = 5, 
+       bg = "transparent")
 ```
 
