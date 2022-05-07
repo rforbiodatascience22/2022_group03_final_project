@@ -105,12 +105,7 @@ results_normal_vs_post <- normal_vs_post %>%
 
 all_results <- results_normal_vs_pre %>% 
   bind_rows(results_pre_vs_post) %>%
-  bind_rows(results_normal_vs_post) %>% 
-  mutate(differentiation = fct_relevel(differentiation, 
-                                       c("Healthy vs. Pre treatment",
-                                         "Healthy vs. Post Treatment",
-                                         "Pre vs. Post Treatment"
-                                         )))
+  bind_rows(results_normal_vs_post)
 
 
 # Write data --------------------------------------------------------------
