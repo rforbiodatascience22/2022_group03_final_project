@@ -7,10 +7,11 @@ library("forcats")
 #library("DESeq2)
 
 # Define functions --------------------------------------------------------
-#source(file = "R/99_project_functions.R")
 
+# Only used here:
 
 calc_logfold <- function(data) {
+  
   # Returns log2 fold changes from data frame
   
   # Filter and convert counts to integer
