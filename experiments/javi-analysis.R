@@ -15,6 +15,7 @@ logfold_treatment <- read_tsv(file = "data/03_treatment_log2fc.tsv")
 combined_meta <- read_tsv(file = "data/02_combined_meta.tsv")
 combined_vst <- read_tsv(file = "data/02_combined_vst.tsv.gz")
 combined_dataset <- read_tsv(file = "data/02_combined.tsv")
+genes_heatmap <- read_tsv(file = "experiments/genes_for_heatmap.tsv")
 
 # Wrangle data ------------------------------------------------------------
 normalized_dataset <- combined_vst %>% 
@@ -77,9 +78,11 @@ selected_genes <- combined_logfc_meta %>%
   filter(RA_mean > 0.55 | RA_mean < -0.55) %>% 
   pull(Genes)
 
+selected_genes2 <- genes_heatmap %>% 
+  pull(gene)
 
 combined_logfc_selected <- combined_logfc_meta %>% 
-  select(id, tag, any_of(selected_genes))
+  select(id, tag, any_of(selected_genes2))
 
 
 # heatmmap selected genes (normal, baseline, post treatment)
@@ -98,9 +101,8 @@ heatmap1 <- combined_logfc_selected %>%
                        high = "red",
                        midpoint = 0) +
   theme_classic(base_size = 8) +
-  theme(legend.position = "bottom",
-        axis.text.x = element_text(angle = 45,
-                                   hjust = 1))
+  theme(axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
 
 #heatmap selected genes (normal, RA established)
 heatmap2 <- combined_logfc_selected %>% 
