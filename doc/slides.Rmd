@@ -13,6 +13,10 @@ knitr::opts_chunk$set(echo = FALSE,
                       dev.args=list(bg="transparent"))
 ```
 
+```{r libraries, echo = TRUE}
+library("tidyverse")
+```
+
 ## 1. Introduction
 
 Why we wanted to look at arthritis, what we wanted to find out, how we were going to do it (in very broad terms), bla bla bla bla.
@@ -22,49 +26,49 @@ Why we wanted to look at arthritis, what we wanted to find out, how we were goin
 Explain the dataset and articles
 Explain the order we did things
 
-## 3. Result 1: Tidy datasets: Before vs. after.
+## 3. Tidy datasets
 
 ```{r cars, echo = TRUE}
 summary(cars)
 ```
 
-## 4. Result 2: First look at data: Patient distribution. (Daniel)
+## 4. Results 1: Exploration of Metadata (Klara)
 
 ```{r}
 plot(pressure)
 ```
 
-## 5. Result 3: Exploration: PCA plots and clustering (Klara)
+## 5. Results 2: PCA and clusters (Klara) 
 
 ```{r}
 plot(pressure)
 ```
   
-## 6. Result 4: Differential expression: Log2fold changes (Mads)
+## 6. Results 3: Differential expression (Mads)
+
+```{r}
+
+```
+
+## 7. Results 4: Heatmaps (Javi)
 
 ```{r}
 plot(pressure)
 ```
 
-## 7. Result 5: Heatmaps (Javi)
+## 8. Results 5: Box plots (Javi)
 
 ```{r}
 plot(pressure)
 ```
 
-## 8. Result 6: Modelling: Logistic regression (Angiliki)
+## 9. Results 6: Model (Angeliki)
 
 ```{r}
 plot(pressure)
 ```
 
-## 9. Extra ??
-
-```{r}
-plot(pressure)
-```
-
-## 10. Discussion + conclusion
+## 10. Discussion + conclusion (Angeliki)
 
 ```{r}
 plot(pressure)
