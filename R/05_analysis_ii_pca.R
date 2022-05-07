@@ -186,4 +186,9 @@ pcol_clus <- plot_grid(prow_clus_female,
 
 pcol_clus
 
-ggsave('results/pcas.png', pcol_clus, width = 15, height = 8, bg = "transparent")
+# Write data 
+ggsave('results/pcas.png', 
+       pcol_clus, 
+       width = 15, 
+       height = 8, 
+       bg = "transparent")
