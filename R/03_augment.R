@@ -1,52 +1,113 @@
 # Info --------------------------------------------------------------------
-#     Add new variables to your data
+#     Calculates log2 fold changes between conditions using DESeq2.
 
 # Load libraries ----------------------------------------------------------
 library("tidyverse")
-
+library("forcats")
+#library("DESeq2)
 
 # Define functions --------------------------------------------------------
-source(file = "R/99_project_functions.R")
+
+# Only used here:
+
+calc_logfold <- function(data) {
+  
+  # Returns log2 fold changes from data frame
+  
+  # Filter and convert counts to integer
+  count <- data %>%
+    select(-condition) %>% 
+    pivot_longer(cols = -id, names_to = "gene") %>% 
+    pivot_wider(names_from = id, values_from = value) %>% 
+    rowwise() %>% 
+    filter(sum(c_across(-gene)) > 200) %>% 
+    ungroup() %>% 
+    mutate(across(where(is.numeric), ~ as.integer(.x))) %>% 
+    as.data.frame()
+  
+  # Extract meta data for DESeq
+  meta <- data %>% 
+    select(c(id,condition)) %>% 
+    as.data.frame()
+  
+  # Convert to DESeq dataset
+  dds <- DESeq2::DESeqDataSetFromMatrix(countData = count,
+                                        colData = meta,
+                                        design = ~condition,
+                                        tidy = TRUE)
+  # Run DESeq
+  dds <- DESeq2::DESeq(dds)
+  
+  # Extract and return results as tibble:
+  
+  DESeq2::results(dds) %>% as_tibble(rownames = "gene")
+  }
 
 
 # Load data ---------------------------------------------------------------
-treatment <- read_tsv(file = "data/02_treatment_w_meta_clean.tsv")
-
+combined <- read_tsv(file = "./data/02_combined.tsv")
 
 # Wrangle data ------------------------------------------------------------
 
-# Adding log2 fold change
+# Add conditions column:
 
-log_wide <- treatment %>% 
-  select(-c(sex, acc_num, age, disease_duration, treatment)) %>% 
-  pivot_longer(cols = -id, names_to = "gene") %>% 
-  pivot_wider(names_from = id, values_from = value) %>%
-  rowwise() %>% 
-  mutate("RA_2fc_1" = log2(RA_post_1+1)-log2(RA_pre_1+1),
-         "RA_2fc_2" = log2(RA_post_2+1)-log2(RA_pre_2+1),
-         "RA_2fc_3" = log2(RA_post_3+1)-log2(RA_pre_3+1),
-         "RA_2fc_4" = log2(RA_post_4+1)-log2(RA_pre_4+1),
-         "RA_2fc_5" = log2(RA_post_5+1)-log2(RA_pre_5+1),
-         "RA_2fc_6" = log2(RA_post_6+1)-log2(RA_pre_6+1),
-         "RA_2fc_7" = log2(RA_post_7+1)-log2(RA_pre_7+1),
-         "RA_2fc_8" = log2(RA_post_8+1)-log2(RA_pre_8+1),
-         "RA_2fc_9" = log2(RA_post_9+1)-log2(RA_pre_9+1),
-         "RA_2fc_10" = log2(RA_post_10+1)-log2(RA_pre_10+1),
-         "RA_2fc_11" = log2(RA_post_11+1)-log2(RA_pre_11+1),
-         "RA_2fc_12" = log2(RA_post_12+1)-log2(RA_pre_12+1),
-         "RA_2fc_13" = log2(RA_post_13+1)-log2(RA_pre_13+1),
-         "RA_2fc_14" = log2(RA_post_14+1)-log2(RA_pre_14+1),
-         "RA_2fc_15" = log2(RA_post_15+1)-log2(RA_pre_15+1),
-         "RA_2fc_16" = log2(RA_post_16+1)-log2(RA_pre_16+1),
-         "RA_2fc_17" = log2(RA_post_17+1)-log2(RA_pre_17+1),
-         "RA_2fc_18" = log2(RA_post_18+1)-log2(RA_pre_18+1),
-         "RA_2fc_19" = log2(RA_post_19+1)-log2(RA_pre_19+1)
-  )
+combined <- combined %>% 
+  mutate("condition" = case_when(str_detect(id,"pre") ~ "pre",
+                                 str_detect(id,"post") ~ "post",
+                                 str_detect(id,"normal") ~ "normal"))
 
-log_long <- log_wide %>% select(-starts_with("RA_p")) %>%  
-  pivot_longer(cols = starts_with("RA_2fc"), names_to = "id") %>% 
-  pivot_wider(names_from = "gene", values_from = "value")
+
+# -------------------------------------------------------------------------
+# Log2 Fold Change: Normal vs. RA_pre
+# -------------------------------------------------------------------------
+
+normal_vs_pre <- combined %>% 
+  filter(str_detect(id, "RA_pre|normal_tissue")) %>% 
+  arrange(id)
+
+results_normal_vs_pre <- normal_vs_pre %>% 
+  calc_logfold() %>% 
+  filter(!is.na(padj)) %>% 
+  mutate(significant = if_else(padj < 0.05, TRUE, FALSE),
+         "differentiation" = "Healthy vs. Pre treatment")
+
+# -------------------------------------------------------------------------
+# Log2 Fold Change: RA_pre vs. RA_post
+# -------------------------------------------------------------------------
+
+pre_vs_post <- combined %>% 
+  filter(str_detect(id, "RA_p")) %>% 
+  arrange(desc(id))
+
+results_pre_vs_post <- pre_vs_post %>% 
+  calc_logfold() %>% 
+  filter(!is.na(padj)) %>% 
+  mutate(significant = if_else(padj < 0.05, TRUE, FALSE),
+         "differentiation" = "Pre vs. Post Treatment")
+
+# -------------------------------------------------------------------------
+# Log2 Fold Change: Normal vs. RA_post
+# -------------------------------------------------------------------------
+
+normal_vs_post <- combined %>% 
+  filter(str_detect(id, "RA_post|normal")) %>% 
+  arrange(desc(id))
+
+results_normal_vs_post <- normal_vs_post %>% 
+  calc_logfold() %>% 
+  filter(!is.na(padj)) %>% 
+  mutate(significant = if_else(padj < 0.05, TRUE, FALSE),
+         "differentiation" = "Healthy vs. Post Treatment")
+
+# -------------------------------------------------------------------------
+# Combine results to one data frame
+# -------------------------------------------------------------------------
+
+all_results <- results_normal_vs_pre %>% 
+  bind_rows(results_pre_vs_post) %>%
+  bind_rows(results_normal_vs_post)
+
 
 # Write data --------------------------------------------------------------
 
-write_tsv(x = log_long, file = "data/03_treatment_log2fc.tsv")
+write_tsv(x = all_results, file = "data/03_combined_log2fc.tsv")

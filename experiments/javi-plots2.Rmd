@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library("tidyverse")
+library("forcats")
 ```
 
 # Loading Data
@@ -112,7 +113,7 @@ selected_genes <- combined_logfc_meta %>%
   pivot_wider(names_from = id, values_from = logfc) %>% 
   mutate(RA_mean = rowMeans(across(where(is.numeric)))) %>% 
   relocate(RA_mean, .after = Genes) %>% 
-  filter(RA_mean > 0.55 | RA_mean < -0.55) %>% 
+  filter(RA_mean > 0.6 | RA_mean < -0.6) %>% 
   pull(Genes)
 
 selected_genes
@@ -146,7 +147,7 @@ combined_logfc_selected %>%
                names_to = "Genes" , 
                values_to = "logfc") %>% 
   ggplot(mapping = aes(x = id,
-                       y = Genes,
+                       y = fct_rev(Genes),
                        fill = logfc )) +
   geom_tile(alpha = 0.5) +
   facet_wrap(~ tag, scales = 'free_x', ncol =) +

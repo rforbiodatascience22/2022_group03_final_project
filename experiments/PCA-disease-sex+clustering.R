@@ -167,7 +167,8 @@ prow_clus_male <- plot_grid(male_pca_plot +
 pcol_clus <- plot_grid(prow_clus_female, 
                        prow_clus_male, 
                        nrow = 2,
-                       rel_heights = c(1, 1.5))
+                       rel_heights = c(1, 1.3))
 
 pcol_clus
 
+ggsave('results/pcas.png', pcol_clus, width = 15, height = 8, bg = "transparent")
