@@ -60,11 +60,17 @@ histogram +
 density + 
    geom_vline(data = means, aes(xintercept=Mean), size=0.5, color="red") +
    geom_label(data=means, size=2.5, 
-             aes(x=Mean, y=0.015, label=paste0(Mean))) +
+             aes(x=Mean, y=0.015, label=paste0(Mean)),
+             show.legend = FALSE) +
   ylab("Count")+
   xlab("Age of patients")+
   guides(fill=guide_legend(title="Condition"))+
   facet_wrap(vars(disease), ncol=1) +
   theme_minimal()
+
+library(png)
+front_path <- "../project/Rthritis.001.png"
+front <- readPNG(front_path, native = TRUE, info = TRUE)
+front
 ```
 
