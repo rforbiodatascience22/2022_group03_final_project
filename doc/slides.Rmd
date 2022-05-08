@@ -68,7 +68,6 @@ knitr::include_graphics('../results/pcas.png')
 
 ## 6. Results 3: Differential expression analysis {#log1}
 
-
 ```{r, out.width="950px"}
 knitr::include_graphics('../results/diff_expr.png')
 ```
@@ -78,8 +77,6 @@ knitr::include_graphics('../results/diff_expr.png')
 ```{r, out.width="950px"}
 knitr::include_graphics('../results/diff_expr_marked.png')
 ```
-
-
 
 ## 7. Results 4: Heatmaps (Javi)
 
@@ -109,6 +106,10 @@ not repoducible data, and why its important
 sampling design and batch effect
 
 ## Goodbye- slide
+
+## References
+
+
 
 
 
