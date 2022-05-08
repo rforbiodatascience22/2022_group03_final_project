@@ -36,7 +36,7 @@ heatmap_under <- heatmap_table %>%
                        y = Genes,
                        fill = logfc )) +
   geom_tile(alpha = 0.5) +
-  facet_wrap(~ tag, scales = 'free_x', ncol =) +
+  facet_wrap(~ tag, scales = 'free_x', strip.position = "bottom") +
   scale_fill_gradient2(low = "blue",
                        mid = "white",
                        high = "red",
@@ -45,7 +45,9 @@ heatmap_under <- heatmap_table %>%
   theme(axis.text.x = element_blank(), 
         axis.ticks.x = element_blank(),
         axis.title.x = element_blank(),
-        axis.title.y = element_blank())
+        axis.title.y = element_blank(),
+        plot.title = element_text(size = 16)) +
+  labs(title = "Genes significantly under regulated in Rheumatoid Arthritis")
 
 heatmap_over <- heatmap_table %>%
   select(id, tag, any_of(selected_genes_over)) %>% 
@@ -57,7 +59,7 @@ heatmap_over <- heatmap_table %>%
                        y = Genes,
                        fill = logfc )) +
   geom_tile(alpha = 0.5) +
-  facet_wrap(~ tag, scales = 'free_x', ncol =) +
+  facet_wrap(~ tag, scales = 'free_x', strip.position = "bottom") +
   scale_fill_gradient2(low = "blue",
                        mid = "white",
                        high = "red",
@@ -66,18 +68,26 @@ heatmap_over <- heatmap_table %>%
   theme(axis.text.x = element_blank(), 
         axis.ticks.x = element_blank(),
         axis.title.x = element_blank(),
-        axis.title.y = element_blank())
+        axis.title.y = element_blank(),
+        plot.title = element_text(size = 16)) +
+  labs(title = "Genes significantly over regulated in Rheumatoid Arthritis")
 
-heatmap_under
+
 heatmap_over
-
+heatmap_under
 # Write data --------------------------------------------------------------
 ggsave("heatmap_under.png",
        heatmap_under,
        dpi = 300,
+       width = 8, 
+       height = 10,
+       units = "in",
        path = "/cloud/project/results")
 
 ggsave("heatmap_over.png",
        heatmap_over,
        dpi = 300,
+       width = 8, 
+       height = 10,
+       units = "in",
        path = "/cloud/project/results")
