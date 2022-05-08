@@ -38,16 +38,20 @@ library("tidyverse")
 ## 1. Introduction
 
 Rheumatism - biomechanics
-12 % of Danish population
+
+12% of Danish population
 
 
 ## 2. Materials and methods
 
-Explain the dataset and articles
-Explain the order we did things
 ```{r, out.width='750px'}
-knitr::include_graphics('../doc/Article1.png')
+knitr::include_graphics('/cloud/project/doc/Article1.png')
 ```
+
+```{r, out.width='750px'}
+knitr::include_graphics('/cloud/project/doc/Article2.png')
+```
+
 ## 3. Data wrangling and tidying
 
 ```{r cars, echo = TRUE}
@@ -55,21 +59,26 @@ summary(cars)
 ```
 
 ## 4. Results 1: Exploration of Metadata (Klara)
-
-```{r, out.width='750px'}
-knitr::include_graphics('../results/age_distr_plot.png')
+```{r,out.width='450px'}
+knitr::include_graphics('/cloud/project/results/sex.png')
 ```
+```{r, out.width='500px'}
+knitr::include_graphics('/cloud/project/results/age.png')
+```
+
 
 ## 5. Results 2: PCA and clusters (Klara) 
 
 ```{r, out.width='900px'}
-knitr::include_graphics('../results/pcas.png')
+knitr::include_graphics('/cloud/project/results/pcas.png')
 ```
 
 ## 6. Results 3: Differential expression analysis {#log1}
 
+
 ```{r, out.width="950px"}
 knitr::include_graphics('../results/diff_expr.png')
+
 ```
 
 ## 6. Results 3: Differential expression analysis {#log2}
@@ -93,7 +102,7 @@ plot(pressure)
 ## 9. Results 6: Model (Angeliki)
 
 ```{r}
-knitr::include_graphics('../results/final_model_LXN_curve.png')
+knitr::include_graphics('/cloud/project/results/final_model_LXN_curve.png')
 ```
 
 ## 10. Discussion + conclusion (Angeliki)
