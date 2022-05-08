@@ -14,6 +14,7 @@ slides > slide:not(.nobackground):after {
 }
 </style>
 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE,
@@ -53,13 +54,19 @@ knitr::include_graphics('../results/age_distr_plot.png')
 knitr::include_graphics('../results/pcas.png')
 ```
 
----
+## 6. Results 3: Differential expression analysis {#log1}
+
+<style>
+    #log1 > p {
+      margin-top: -50px;
+    }
+</style>
 
 ```{r, fig.dim=c(10,6)}
 all_logfold <- read_tsv(file = "../data/03_combined_log2fc.tsv")
 diff_expr_genes <- read_tsv(file = "../data/08_diff_expr_genes.tsv")
 
-all_logfold %>% 
+p <- all_logfold %>% 
   left_join(diff_expr_genes, by = "gene") %>%
   mutate(differentiation = fct_relevel(differentiation, 
                                        c("Healthy vs. Pre treatment",
@@ -68,26 +75,51 @@ all_logfold %>%
                                        ))) %>% 
   ggplot(mapping = aes(x = gene, 
                        y = log2FoldChange,
-                       color = factor(significant),
-                       fill = factor(diff_expr))) + 
-  geom_point(alpha = 0.4, shape = 21) +
-  scale_color_manual(values = c("black", "dodgerblue3"), na.translate = F) +
-  scale_fill_manual(values = c("under" = "brown1", "over" = "chartreuse"), na.translate = F) +
+                       color = factor(significant))) + 
+  geom_point(alpha = 0.4, 
+             shape = 21) +
+  scale_color_manual(values = c("black", 
+                                "dodgerblue3"), 
+                     na.translate = F) +
+  scale_fill_manual(values = c("under" = "brown1",
+                               "over" = "chartreuse"),
+                    labels = c("Under","Over"),
+                    na.translate = F) +
   theme_minimal(base_family = "Avenir",
                 base_size = 10) +
   labs(x = "Gene", 
        y = "log2 Fold Change",
-       fill = "Differential expression",
-       color = "Adjusted p < 0.05",
-       title = "6. Results 3: Differential expression analysis") +
-  lims(y = c(-10,10)) +
+       fill = "Differential Expression",
+       color = "Adjusted p < 0.05") +
+  lims(y = c(-8,8)) +
   theme(legend.position = "bottom",
         axis.text.x=element_blank(),
         panel.grid.major=element_blank(),
         panel.grid.minor=element_blank()) +
   facet_grid(rows = vars(differentiation))
+p
 
+```
 
+## 6. Results 3: Differential expression analysis {#log2}
+
+<style>
+    #log2 > p {
+      margin-top: -50px;
+    }
+</style>
+
+```{r, fig.dim=c(10,6)}
+p + 
+  aes(x = gene,
+        y = log2FoldChange,
+        color = factor(significant),
+        fill = factor(diff_expr)) +
+  labs(x = "Gene", 
+       y = "log2 Fold Change",
+       fill = "Differential Expression",
+       color = "Adjusted p < 0.05")
+  
 ```
 
 ## 7. Results 4: Heatmaps (Javi)
