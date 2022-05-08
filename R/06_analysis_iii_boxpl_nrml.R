@@ -21,7 +21,7 @@ vst_data_long <-
          IL10,
          CLEC12A,
          AURKA,
-         MMP13,
+         abParts,
          CLEC2B,
          CD58) %>%
   separate(col = id, 
@@ -62,7 +62,7 @@ allcond_sele_genes <-
                                      "MS4A1",
                                      "CTLA4",
                                      "CD19",
-                                     "MMP13",
+                                     "abParts",
                                      "CLEC12A",
                                      "AURKA",
                                      "IL10",
@@ -74,11 +74,14 @@ allcond_sele_genes <-
   theme(panel.border = element_blank(),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        axis.line = element_line(colour = "black")
+        axis.line = element_line(colour = "black"),
+        axis.title.x = element_blank()
         ) +
-  theme(axis.text.x = element_text(angle = 45,
-                                   hjust = 1)
-        ) 
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()
+  )+
+  ylab("Expression Level") +
+  labs(col="")
 
 # Boxplot of only treatment and normal data
 drug_sele_genes <-
@@ -100,24 +103,28 @@ drug_sele_genes <-
                                      "MS4A1",
                                      "CTLA4",
                                      "CD19",
-                                     "MMP13",
+                                     "abParts",
                                      "CLEC12A",
                                      "AURKA",
                                      "IL10",
                                      "CLEC2B",
                                      "CD58")
                      ), 
-                     scales = 'free_y', 
+                     scales = 'free_y',
                      nrow = 2) +
   theme_bw() +
   theme(panel.border = element_blank(), 
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black")
+        axis.line = element_line(colour = "black"),
+        axis.title.x = element_blank()
         ) +
-  theme(axis.text.x = element_text(angle = 45,
-                                   hjust = 1)
-        )
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()
+        )+
+  ylab("Expression Level") +
+  labs(col="")
+  
 # Write data --------------------------------------------------------------
 ggsave("06_boxp_sele_genes_allcond.png",
        plot = allcond_sele_genes,
