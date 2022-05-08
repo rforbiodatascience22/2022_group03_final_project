@@ -12,7 +12,6 @@ data8 %>%
   select(age) %>% 
   mean("age") 
 
-
 druggood <- drug %>%
   as_tibble() %>% 
   select(1:4) %>% 
@@ -35,21 +34,23 @@ means <- druggood %>%
 density <- druggood %>% 
   drop_na(age) %>% 
   ggplot(aes(age, fill=disease)) +
+  scale_fill_viridis_d(alpha = 0.5) +
   geom_density(alpha=0.4) 
 
 histogram <- druggood %>% 
   drop_na(sex) %>% 
   ggplot(aes(disease, fill=sex)) +
+  scale_fill_viridis_d(alpha = 0.5) +
   theme(axis.text.x = element_text(angle = 90),
         axis.title.x.top = element_blank()) +
   geom_bar(alpha=0.4)
-
 
 sex_distribution_plot <- histogram +
   facet_wrap(vars(sex)) +
   scale_x_discrete(guide = guide_axis(angle = 90))+
   xlab("Patient group") +
   ylab("Number of patients")+
+  scale_fill_viridis_d(alpha = 0.5) +
   theme_minimal()
 
 age_distribution_plot <- density + 
@@ -61,17 +62,12 @@ age_distribution_plot <- density +
   xlab("Age of patients")+
   guides(fill=guide_legend(title="Condition"))+
   facet_wrap(vars(disease), ncol=1) +
+  scale_fill_viridis_d(alpha = 0.5) +
   theme_minimal()
 
 age_distribution_plot
 sex_distribution_plot
 
-ggsave('/cloud/project/results/04_sex_distribution.png', 
-       sex_distribution_plot, 
-       width = 8, 
-       height = 8, 
-       bg = "transparent")
-
 ggsave('/cloud/project/results/04_age_distribution.png', 
        age_distribution_plot, 
        width = 8, 
@@ -84,8 +80,3 @@ ggsave('/cloud/project/results/04_sex_distribution.png',
        height = 8, 
        bg = "transparent")
 
-ggsave('/cloud/project/results/04_age_distribution.png', 
-       age_distribution_plot, 
-       width = 8, 
-       height = 8, 
-       bg = "transparent")
