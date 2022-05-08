@@ -280,9 +280,125 @@ mdl_coef <- mdl_tidy %>%
 
 write_tsv(mdl_coef, file = "experiments/model_coeff.tsv")
 
-# Plot
-View(mdl_tidy)
+# Check
+mdl_coef %>% 
+  filter(p.value < 0.05) %>% 
+  arrange(desc(estimate))
+
+
+mdl_coef %>% 
+  filter(p.value < 0.05) %>% 
+  ggplot(mapping = aes(x = gene, 
+                        y = estimate)) + 
+  geom_point(alpha = 0.5) +
+  theme_minimal()
+  
 # Gene on x, coeff on y:
+
+
+View(mdl_coef)
+
+
+
+
+
+
+
+
+# -------------------------------------------------------------------------
+###### Make linear model. Predict RA_pre from normal (Large set):
+
+# Filter heavily, and subsample RA to 28
+combined <- read_tsv(file = "./data/02_combined.tsv") %>% 
+  filter(str_detect(id, "RA_p|normal_tissue"))
+
+combined_filtered_wide <- combined %>% 
+  pivot_longer(cols = -id, names_to = "gene") %>% 
+  pivot_wider(names_from = id, values_from = value) %>% 
+  rowwise() %>% 
+  filter(sum(c_across(-gene)) > 200) %>% 
+  ungroup()
+
+combined_filtered_wide_rlog <- combined_filtered_wide %>% 
+  mutate(across(where(is.numeric), ~ as.integer(.x))) %>% 
+  select(-gene) %>% 
+  as.matrix() %>% 
+  unname() %>%
+  DESeq2::rlog()
+
+colnames(combined_filtered_wide_rlog) <- pull(combined, id)
+rownames(combined_filtered_wide_rlog) <- pull(combined_filtered_wide, gene)
+
+
+combined_rlog_long <- combined_filtered_wide_rlog %>% 
+  as_tibble(rownames = "gene") %>% 
+  pivot_longer(cols = -gene, names_to = "id") %>% 
+  pivot_wider(names_from = gene, values_from = value)
+
+# Save rlog:
+
+write_tsv(x = combined_rlog_long, file = "experiments/combined_rlog.tsv")
+
+# Subsample RA_pre tissue
+set.seed(18)
+RA_pre <- combined_rlog_long %>% 
+  filter(str_detect(id, "RA_pre")) %>%
+  sample_n(19)
+
+
+# Combine with healthy tissue:
+RA_pre_vs_normal <- combined_rlog_long %>% 
+  filter(str_detect(id, "normal")) %>% 
+  bind_rows(RA_pre) %>% 
+  mutate(response = if_else(str_detect(id, "RA"), 1, 0))
+
+
+# Create long form for modelling:
+long <- RA_pre_vs_normal %>% 
+  select(-id) %>% 
+  pivot_longer(cols = -response, 
+               names_to = "gene", 
+               values_to = "log_expr")
+
+# Nest data:
+nested <- long %>% 
+  group_by(gene) %>% 
+  nest() %>% 
+  ungroup()
+
+# Model:
+mdl_data <- nested %>% mutate(mdl = map(data, 
+                                        ~glm(response ~ log_expr, 
+                                             data = ., 
+                                             family = binomial(link = "logit"))))
+# Tidy:
+mdl_tidy <- mdl_data %>% 
+  mutate(tidy = map(mdl, tidy, conf.int = TRUE)) %>% 
+  unnest(tidy)
+
+
+
+# Extract only coefficient:
+mdl_coef <- mdl_tidy %>% 
+  filter(term == "log_expr") %>% 
+  select(-c(data,mdl))
+
+write_tsv(mdl_coef, file = "experiments/model_coeff.tsv")
+
+# Check
+mdl_coef %>% 
+  filter(p.value < 0.05) %>% 
+  arrange(desc(estimate))
+
+
+mdl_coef %>% 
+  filter(p.value < 0.05) %>% 
+  ggplot(mapping = aes(x = gene, 
+                       y = estimate)) + 
+  geom_point(alpha = 0.5) +
+  theme_minimal()
+
+
 
 
 
