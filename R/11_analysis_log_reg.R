@@ -66,18 +66,18 @@ mdl_plot <- mdl_sign %>% mutate(neg_log10 = -log10(p.value))
 
 # Visualise data ----------------------------------------------------------
 log_reg <- mdl_plot %>% 
-  ggplot(mapping = aes(x = estimate,
-                       y = gene,
+  ggplot(mapping = aes(x =gene,
+                       y = estimate,
                        color = factor(significant))) + 
   geom_point(alpha = 0.4) +
-  scale_color_discrete(na.translate = F) +
+  scale_color_discrete(na.translate = F, label = c("False","True")) +
   theme_minimal(base_family = "Avenir",
                 base_size = 10) +
-  labs(x = "Regression coefficient", 
-       y = "Gene",
+  labs(x = "Gene", 
+       y = "Regression coefficient",
        color = "Adjusted p < 0.05") +
   theme(legend.position = "bottom",
-        axis.text.y=element_blank(),
+        axis.text.x=element_blank(),
         panel.grid.major=element_blank(),
         panel.grid.minor=element_blank())
 
