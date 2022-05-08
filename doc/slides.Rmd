@@ -75,14 +75,14 @@ knitr::include_graphics('/cloud/project/results/05_pca_plots.png')
 
 
 ```{r, out.width="950px"}
-knitr::include_graphics('../results/08_diff_expr.png')
+knitr::include_graphics('../results/06_diff_expr.png')
 
 ```
 
 ## 6. Results 3: Differential expression analysis {#log2}
 
 ```{r, out.width="950px"}
-knitr::include_graphics('/cloud/project/results/08_diff_expr_marked.png')
+knitr::include_graphics('/cloud/project/results/06_diff_expr_marked.png')
 ```
 
 ## 7. Results 4: Heatmaps (Javi)
@@ -95,27 +95,25 @@ knitr::include_graphics('/cloud/project/results/07_heatmap_under.png')
 ## 8. Results 5: Box plots (Javi)
 
 ```{r}
-plot(pressure)
+knitr::include_graphics('/cloud/project/results/08_bxpl_sele_genes_drug.png')
 ```
 
 ## 9. Results 6: Model (Angeliki)
 
 ```{r}
-knitr::include_graphics('/cloud/project/results/final_model_LXN_curve.png')
+knitr::include_graphics('/cloud/project/results/09_model_LXN_curve.png')
 ```
 
 ## 10. Discussion + conclusion (Angeliki)
 
-identified significant differences in gene expression between early RA and healthy synovial tissue
-expression of some genes reversed after tDMARD
-these results give insight into the action mechanism or the drug
-no follow up on patient condition
-not repoducible data, and why its important
-sampling design and batch effect
+- Significant differences in gene expression between early RA and healthy synovial tissue
+- Expression of certain genes reversed after tDMARD
+- Others remained the same
+- Insights into tDMARD action mechanisms
+- Reproducible data?
+- Sampling design and batch effect
 
-## Goodbye- slide
 
-## References
 
 
 
