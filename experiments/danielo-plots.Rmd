@@ -60,7 +60,7 @@ density <- druggood %>%
   ggplot(aes(age, fill=disease)) +
   geom_density(alpha=0.4) 
 
-histogram <- data8 %>% 
+histogram <- druggood %>% 
   drop_na(sex) %>% 
   ggplot(aes(disease, fill=sex)) +
   theme(axis.text.x = element_text(angle = 90)) +
@@ -68,6 +68,8 @@ histogram <- data8 %>%
 
 histogram +
   facet_wrap(vars(sex)) +
+  ylab("Number of patients")+
+  xlab("Patient group, by sexes")+
   scale_x_discrete(guide = guide_axis(angle = 90))+
   theme_minimal()
 
@@ -78,13 +80,13 @@ age_distribution_plot <- density +
              show.legend = FALSE) +
   ylab("Count")+
   xlab("Age of patients")+
-  guides(fill=guide_legend(title="Condition"))+
+  guides(fill=guide_legend(title="Patient group"))+
   facet_wrap(vars(disease), ncol=1) +
   theme_minimal()
 
 age_distribution_plot
 
-ggsave("age.png", plot = last_plot(), device = NULL, path = '/cloud/project/results')
+ggsave("sex.png", plot = last_plot(), device = NULL, path = '/cloud/project/results')
 
 
 ```
