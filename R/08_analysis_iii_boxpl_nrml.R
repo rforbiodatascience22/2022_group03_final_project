@@ -96,8 +96,10 @@ drug_sele_genes <-
   )
   ) +
   geom_boxplot(outlier.size = .5) +
-  geom_jitter(aes(colour = condition),
-              size = 0.7
+  geom_jitter(aes(fill = condition),
+              colour = "black",
+              pch = 21, 
+              size = 2
   )+
   facet_wrap(~factor(gene, levels =c("CD3D",
                                      "MS4A1",
@@ -123,15 +125,24 @@ drug_sele_genes <-
         axis.ticks.x = element_blank()
         )+
   ylab("Expression Level") +
+  scale_fill_viridis_d(alpha = 0.5) +
   labs(col="")
   
 # Write data --------------------------------------------------------------
 ggsave("08_boxp_sele_genes_allcond.png",
        plot = allcond_sele_genes,
        bg = "transparent",
+       dpi = 300,
+       width = 12, 
+       height = 10,
+       units = "in",
        path = "/cloud/project/results")
 
 ggsave("08_bxpl_sele_genes_drug.png",
        plot = drug_sele_genes,
        bg = "transparent",
+       dpi = 300,
+       width = 12, 
+       height = 10,
+       units = "in",
        path = "/cloud/project/results")
