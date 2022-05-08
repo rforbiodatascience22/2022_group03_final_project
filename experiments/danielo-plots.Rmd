@@ -14,6 +14,8 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 
 ```{r}
 data8 <- read_tsv("../data/02_large_w_meta_clean.tsv")
+drug <- read_tsv("../data/02_treatment_w_meta_clean.tsv")
+
     
 data8 %>% 
   ggplot(aes(age, fill=disease)) +
@@ -25,7 +27,19 @@ data8 %>%
   select(age) %>% 
   mean("age") 
 
-means <- data8 %>% 
+
+druggood <- drug %>%
+  as_tibble() %>% 
+  select(1:4) %>% 
+  mutate_if(is.logical, as.character) %>% 
+  filter(treatment == "TRUE") %>%
+  dplyr::rename(disease = treatment) %>% 
+  mutate(disease = case_when(disease == 'TRUE' ~ 'Treatment cohort')) %>% 
+  bind_rows(data8 %>% 
+              select(1:4) 
+            )
+
+means <- druggood %>% 
   drop_na(age) %>% 
   group_by(disease) %>% 
   summarize(Mean = round(mean(age, na.rm=TRUE))) %>% 
@@ -41,7 +55,7 @@ male <- data8 %>%
   group_by(disease) %>% 
   summarise(n())
 
-density <- data8 %>% 
+density <- druggood %>% 
   drop_na(age) %>% 
   ggplot(aes(age, fill=disease)) +
   geom_density(alpha=0.4) 
@@ -68,11 +82,9 @@ age_distribution_plot <- density +
   facet_wrap(vars(disease), ncol=1) +
   theme_minimal()
 
-ggsave('../results/age_distr_plot.png', 
-       age_distribution_plot, 
-       width = 8, 
-       height = 5, 
-       bg = "transparent")
+age_distribution_plot
+
+
 ```
 
 
