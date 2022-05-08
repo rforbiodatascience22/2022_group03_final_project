@@ -66,7 +66,7 @@ histogram <- data8 %>%
   theme(axis.text.x = element_text(angle = 90)) +
   geom_bar(alpha=0.4)
 
-histogram +
+sex_distribution_plot <- histogram +
   facet_wrap(vars(sex)) +
   scale_x_discrete(guide = guide_axis(angle = 90))+
   theme_minimal()
@@ -76,14 +76,23 @@ age_distribution_plot <- density +
    geom_label(data=means, size=2.5, 
              aes(x=Mean, y=0.015, label=paste0(Mean)),
              show.legend = FALSE) +
-  ylab("Count")+
+  ylab("Density")+
   xlab("Age of patients")+
   guides(fill=guide_legend(title="Condition"))+
   facet_wrap(vars(disease), ncol=1) +
   theme_minimal()
 
-age_distribution_plot
+ggsave('/cloud/project/results/04_sex_distribution.png', 
+       sex_distribution_plot, 
+       width = 8, 
+       height = 8, 
+       bg = "transparent")
 
+ggsave('/cloud/project/results/04_age_distribution.png', 
+       age_distribution_plot, 
+       width = 8, 
+       height = 8, 
+       bg = "transparent")
 
 ```
 

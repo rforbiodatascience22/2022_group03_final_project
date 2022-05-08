@@ -5,7 +5,7 @@ date: '2022-05-06'
 output: 
   ioslides_presentation:
     widescreen: true
-    logo: Rthritis001.png
+    logo: Rthritis_logo.png
 ---
 
 <style type="text/css">
@@ -44,26 +44,21 @@ Rheumatism - biomechanics
 
 ## 2. Materials and methods
 
-```{r, out.width='750px'}
-knitr::include_graphics('/cloud/project/doc/Article1.png')
-```
 
-```{r, out.width='750px'}
-knitr::include_graphics('/cloud/project/doc/Article2.png')
+
+```{r, out.width='1000px'}
+knitr::include_graphics('/cloud/project/doc/Article_flow.png')
 ```
 
 ## 3. Data wrangling and tidying
 
-```{r cars, echo = TRUE}
-summary(cars)
-```
 
 ## 4. Results 1: Exploration of Metadata (Klara)
 ```{r,out.width='450px'}
-knitr::include_graphics('/cloud/project/results/sex.png')
+knitr::include_graphics('/cloud/project/results/04_age_distribution.png')
 ```
 ```{r, out.width='500px'}
-knitr::include_graphics('/cloud/project/results/age.png')
+knitr::include_graphics('/cloud/project/results/04_sex_distribution.png')
 ```
 
 
@@ -84,13 +79,13 @@ knitr::include_graphics('../results/08_diff_expr.png')
 ## 6. Results 3: Differential expression analysis {#log2}
 
 ```{r, out.width="950px"}
-knitr::include_graphics('../results/08_diff_expr_marked.png')
+knitr::include_graphics('/cloud/project/results/08_diff_expr_marked.png')
 ```
 
 ## 7. Results 4: Heatmaps (Javi)
 
 ```{r}
-plot(pressure)
+knitr::include_graphics('/cloud/project/results/')
 ```
 
 ## 8. Results 5: Box plots (Javi)
