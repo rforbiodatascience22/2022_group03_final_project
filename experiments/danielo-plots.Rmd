@@ -74,7 +74,5 @@ ggsave('../results/age_distr_plot.png',
        height = 5, 
        bg = "transparent")
 ```
-```{r}
-density
-```
+
 
