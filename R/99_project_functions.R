@@ -5,4 +5,3 @@ foo <- function(x){
 bar <- function(x){
   return(x^2)
 }
-...
