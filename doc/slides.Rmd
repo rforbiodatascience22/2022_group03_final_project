@@ -44,17 +44,16 @@ Rheumatism - biomechanical disorder(s)
 Good treatment options, but little insight on mechanism of action
 
 ## 2. Materials and methods
-
-
-
 ```{r, out.width='1000px'}
 knitr::include_graphics('/cloud/project/doc/Article_flow.png')
 ```
 
 ## 3. Data tidying
-A column per variable
-A row per observation
-A cell per value
+A column per variable, a row per observation, a cell per value
+```{r, out.width='800px'}
+knitr::include_graphics('/cloud/project/doc/data_slide.png')
+```
+
 
 ## 4. Results 1: Exploration of Metadata (Klara)
 ```{r,out.width='450px'}
@@ -75,7 +74,7 @@ knitr::include_graphics('/cloud/project/results/05_pca_plots.png')
 
 
 ```{r, out.width="950px"}
-knitr::include_graphics('../results/06_diff_expr.png')
+knitr::include_graphics('/cloud/project/results/06_diff_expr.png')
 
 ```
 

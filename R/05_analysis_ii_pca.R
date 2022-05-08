@@ -43,31 +43,41 @@ male_pca_plot <- male_pca_fit %>%
   augment(male_combined_w_meta) %>% # add original dataset back in
   ggplot(aes(.fittedPC1, 
              .fittedPC2, 
-             color = disease)) + 
-  geom_point(size = 1.5) +
+             )) + 
+  geom_point(size = 1.5,
+             aes(fill = disease),
+             colour = "black",
+             pch = 21) +
   labs(x = 'PC1',
        y = 'PC2',
        title = 'PCA plot of diseases in males') +
-  scale_colour_viridis_d(alpha = 0.5) +
+  scale_fill_viridis_d(alpha = 0.5) +
   theme_minimal()
 
 female_pca_plot <- female_pca_fit %>%
   augment(female_combined_w_meta) %>% # add original dataset back in
   ggplot(aes(.fittedPC1, 
              .fittedPC2, 
-             color = disease)) + 
-  geom_point(size = 1.5) +
+  )) + 
+  geom_point(size = 1.5,
+             aes(fill = disease),
+             colour = "black",
+             pch = 21) +
   labs(x = 'PC1',
        y = 'PC2',
        title = 'PCA plot of diseases in females') +
-  scale_colour_viridis_d(alpha = 0.5) +
+  scale_fill_viridis_d(alpha = 0.5) +
   theme_minimal()
 
 # Extracting a legend
-legend <- get_legend(male_pca_plot + theme(legend.position = 'bottom'))
+legend <- get_legend(male_pca_plot + 
+                       theme(legend.position = 'bottom'))
 
-prow <- plot_grid(male_pca_plot + theme(legend.position = 'null') + theme_cowplot(), 
-                  female_pca_plot + theme(legend.position = 'null'), 
+prow <- plot_grid(male_pca_plot + 
+                    theme(legend.position = 'null') + 
+                    theme_cowplot(), 
+                  female_pca_plot + 
+                    theme(legend.position = 'null'), 
                   rel_widths = c(2, 2))
 two_pcas <- plot_grid(prow, legend, ncol = 1, rel_heights = c(1, .1))
 
@@ -80,7 +90,8 @@ tidy_female_pca <- female_pca_fit %>%
 # Extracting first two components
 female_points <- tidy_female_pca %>% 
   filter(PC==1 | PC==2) %>% 
-  pivot_wider(names_from = 'PC', values_from = 'value') %>% 
+  pivot_wider(names_from = 'PC', 
+              values_from = 'value') %>% 
   select(-row)
 
 # Renaming columns
@@ -111,12 +122,14 @@ clusterings_female <- kclusts_female %>%
 kmeans_plot_female <- assignments_female %>% 
   ggplot(aes(x = PC1, 
              y = PC2)) +
-  geom_point(aes(color = .cluster), 
-             alpha = 0.8) +
+  geom_point(size = 1.5,
+             aes(fill = .cluster),
+             colour = "black",
+             pch = 21) +
   labs(title = 'Plot of clustered PCA components',
        color = 'cluster') +
   facet_wrap(~k) +
-  scale_colour_viridis_d(alpha = 0.5) +
+  scale_fill_viridis_d(alpha = 0.5) +
   theme_minimal()
 
 ## KMEANS analysis - females
@@ -158,12 +171,14 @@ clusterings <- kclusts_male %>%
 kmeans_plot_male <- assignments_male %>% 
   ggplot(aes(x = PC1, 
              y = PC2)) +
-  geom_point(aes(color = .cluster), 
-             alpha = 0.8) +
+  geom_point(size = 1.5,
+             aes(fill = .cluster),
+             colour = "black",
+             pch = 21) +
   labs(title = 'Plot of clustered PCA components',
        color = 'cluster') +
   facet_wrap(~k) +
-  scale_colour_viridis_d(alpha = 0.5) +
+  scale_fill_viridis_d(alpha = 0.5) +
   theme_minimal()
 
 
