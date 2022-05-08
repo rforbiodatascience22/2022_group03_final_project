@@ -1,6 +1,7 @@
 # Load libraries ----------------------------------------------------------
 library("tidyverse")
 library("ggplot2")
+library("broom")
 
 # Define functions --------------------------------------------------------
 #source(file = "R/99_project_functions.R")
@@ -51,7 +52,7 @@ train_data <-
 test_data <-
   normal_ii %>% 
   bind_rows(ra_ii)
-  # bind_rows(ra_iv)
+# bind_rows(ra_iv)
 
 
 # Model data
@@ -59,6 +60,11 @@ earlyRA.model_i <- train_data %>%
   glm(outcome ~ LXN ,
       data = .,
       family = binomial(link = "logit"))
+
+lxn_pvalue <-
+  tidy(earlyRA.model_i) %>% 
+  filter(term == "LXN") %>% 
+  pull(p.value)
 
 # earlyRA.model_ii <- train_data %>%
 #   glm(outcome ~ LXN + IL8 ,
@@ -102,13 +108,15 @@ LXN_curve <- train_data %>%
              mapping = aes(
                x=LXN,
                y=outcome
-               ),
+             ),
              colour = "white", size = 1.5) +
   theme_minimal() +
   labs(
     title = "Simple model to distinguish early RA from normal condition",
     subtitle = "Based on RNA-seq data for the gene LXN (CXCL8)",
-    caption = "Input data are normalized reads."
+    caption = str_c("Input data are normalized reads. P-value ", 
+                    round(lxn_pvalue,5)
+    )
   ) +
   theme(axis.text = element_text(size = 8),
         axis.title = element_text(size = 10),
@@ -124,3 +132,4 @@ ggsave("final_model_LXN_curve.png",
        height = 3, 
        bg = "transparent",
        path = "/cloud/project/results")
+
