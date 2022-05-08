@@ -110,9 +110,12 @@ knitr::include_graphics('../results/final_model_LXN_curve.png')
 
 ## 10. Discussion + conclusion (Angeliki)
 
-```{r}
-plot(pressure)
-```
+identified significant differences in gene expression between early RA and healthy synovial tissue
+expression of some genes reversed after tDMARD
+these results give insight into the action mechanism or the drug
+no follow up on patient condition
+not repoducible data, and why its important
+sampling design and batch effect
 
 ## Goodbye- slide
 
