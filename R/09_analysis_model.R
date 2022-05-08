@@ -107,7 +107,7 @@ LXN_curve <- train_data %>%
 ggsave("09_model_LXN_curve.png",
        LXN_curve,       
        width = 7, 
-       height = 3, 
+       height = 4, 
        bg = "transparent",
        path = "/cloud/project/results")
 

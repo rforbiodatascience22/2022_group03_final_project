@@ -140,9 +140,9 @@ ggsave("08_boxp_sele_genes_allcond.png",
 
 ggsave("08_bxpl_sele_genes_drug.png",
        plot = drug_sele_genes,
-       bg = "transparent",
        dpi = 300,
        width = 12, 
-       height = 10,
+       height = 7,
        units = "in",
-       path = "/cloud/project/results")
+       path = "/cloud/project/results",
+       bg = "transparent")

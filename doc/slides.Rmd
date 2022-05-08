@@ -1,7 +1,7 @@
 ---
 title: "Rthritis"
-author: "the best group EVER"
-date: '2022-05-06'
+author: "Group 3"
+date: '2022-05-10'
 output: 
   ioslides_presentation:
     widescreen: true
@@ -35,7 +35,7 @@ knitr::opts_chunk$set(echo = FALSE,
 library("tidyverse")
 ```
 
-## 1. Introduction
+## Introduction
 
 Rheumatism - biomechanical disorder(s)
 
@@ -43,19 +43,21 @@ Rheumatism - biomechanical disorder(s)
 
 Good treatment options, but little insight on mechanism of action
 
-## 2. Materials and methods
+## Materials and methods
 ```{r, out.width='1000px'}
 knitr::include_graphics('/cloud/project/doc/Article_flow.png')
 ```
 
-## 3. Data tidying
-A column per variable, a row per observation, a cell per value
-```{r, out.width='800px'}
+## Data tidying
+2 datasets separated in count and metadata files
+```{r, out.width='600px'}
 knitr::include_graphics('/cloud/project/doc/data_slide.png')
 ```
 
+A column per variable, a row per observation, a cell per value
 
-## 4. Results 1: Exploration of Metadata (Klara)
+
+## Exploration of Metadata
 ```{r,out.width='450px'}
 knitr::include_graphics('/cloud/project/results/04_age_distribution.png')
 ```
@@ -64,13 +66,13 @@ knitr::include_graphics('/cloud/project/results/07_age_n_sex-distribution.png')
 ```
 
 
-## 5. Results 2: PCA and k-means clustering
+## PCA and k-means clustering
 
 ```{r, out.width='900px'}
 knitr::include_graphics('/cloud/project/results/05_pca_plots.png')
 ```
 
-## 6. Results 3: Differential expression analysis {#log1}
+## Differential expression analysis {#log1}
 
 
 ```{r, out.width="950px"}
@@ -78,32 +80,32 @@ knitr::include_graphics('/cloud/project/results/06_diff_expr.png')
 
 ```
 
-## 6. Results 3: Differential expression analysis {#log2}
+## Differential expression analysis {#log2}
 
 ```{r, out.width="950px"}
 knitr::include_graphics('/cloud/project/results/06_diff_expr_marked.png')
 ```
 
-## 7. Results 4: Heatmaps (Javi)
+## Heatmaps
 
 ```{r, out.width='460px'}
-knitr::include_graphics('/cloud/project/results/07_heatmap_over.png')
 knitr::include_graphics('/cloud/project/results/07_heatmap_under.png')
+knitr::include_graphics('/cloud/project/results/07_heatmap_over.png')
 ```
 
-## 8. Results 5: Box plots (Javi)
+## Box plots
 
-```{r}
+```{r, out.width="800px"}
 knitr::include_graphics('/cloud/project/results/08_bxpl_sele_genes_drug.png')
 ```
 
-## 9. Results 6: Model (Angeliki)
+## Model
 
-```{r}
+```{r, out.width="850px"}
 knitr::include_graphics('/cloud/project/results/09_model_LXN_curve.png')
 ```
 
-## 10. Discussion + conclusion (Angeliki)
+## Discussion
 
 - Significant differences in gene expression between early RA and healthy synovial tissue
 - Expression of certain genes reversed after tDMARD
