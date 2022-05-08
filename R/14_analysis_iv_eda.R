@@ -2,6 +2,7 @@
 library("tidyverse")
 library("ggridges")
 library("viridisLite")
+library("viridis")
 
 
 # Define functions --------------------------------------------------------
@@ -44,7 +45,7 @@ sex_repres <-
   geom_bar(position="dodge") +
   facet_wrap(vars(disease)) +
   theme_minimal() + 
-  scale_fill_viridis_d(alpha = 0.8) +
+  scale_fill_viridis_d(alpha = 0.5) +
   labs(title = "Sex participation per condition") +
   xlab("") 
 
@@ -53,7 +54,7 @@ age_n_sex <-
   all_metadata %>% 
   drop_na(age) %>% 
   ggplot(mapping = aes(x = sex, y = age, fill = sex)) + 
-  geom_violin(scale = "count", alpha = 0.8, color = NA) +
+  geom_violin(scale = "count", alpha = 0.5, color = NA) +
   geom_jitter(width = 0.1, size = 0.3 ) +
   theme_minimal() +
   scale_fill_viridis(discrete = TRUE) +
@@ -68,4 +69,6 @@ ggsave("07_sex_repres.png",
        path = "/cloud/project/results")
 ggsave("07_age_n_sex-distribution.png",
        plot = age_n_sex,
+       width = 8,
+       height = 7,
        path = "/cloud/project/results")

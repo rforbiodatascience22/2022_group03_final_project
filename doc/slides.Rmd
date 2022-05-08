@@ -61,14 +61,14 @@ A cell per value
 knitr::include_graphics('/cloud/project/results/04_age_distribution.png')
 ```
 ```{r, out.width='500px'}
-knitr::include_graphics('/cloud/project/results/04_sex_distribution.png')
+knitr::include_graphics('/cloud/project/results/07_age_n_sex-distribution.png')
 ```
 
 
 ## 5. Results 2: PCA and k-means clustering
 
 ```{r, out.width='900px'}
-knitr::include_graphics('/cloud/project/results/pcas.png')
+knitr::include_graphics('/cloud/project/results/05_pca_plots.png')
 ```
 
 ## 6. Results 3: Differential expression analysis {#log1}

@@ -7,6 +7,7 @@ library(tidyr)
 library(broom)
 
 # Reading data
+Sys.setenv("VROOM_CONNECTION_SIZE" = 2*131072)
 combined <- read_tsv(file = "./data/02_combined_vst.tsv.gz")
 combined_meta <- read_tsv(file = "./data/02_combined_meta.tsv")
 # Joining data with metadata
@@ -47,6 +48,7 @@ male_pca_plot <- male_pca_fit %>%
   labs(x = 'PC1',
        y = 'PC2',
        title = 'PCA plot of diseases in males') +
+  scale_colour_viridis_d(alpha = 0.5) +
   theme_minimal()
 
 female_pca_plot <- female_pca_fit %>%
@@ -58,6 +60,7 @@ female_pca_plot <- female_pca_fit %>%
   labs(x = 'PC1',
        y = 'PC2',
        title = 'PCA plot of diseases in females') +
+  scale_colour_viridis_d(alpha = 0.5) +
   theme_minimal()
 
 # Extracting a legend
@@ -113,6 +116,7 @@ kmeans_plot_female <- assignments_female %>%
   labs(title = 'Plot of clustered PCA components',
        color = 'cluster') +
   facet_wrap(~k) +
+  scale_colour_viridis_d(alpha = 0.5) +
   theme_minimal()
 
 ## KMEANS analysis - females
@@ -159,6 +163,7 @@ kmeans_plot_male <- assignments_male %>%
   labs(title = 'Plot of clustered PCA components',
        color = 'cluster') +
   facet_wrap(~k) +
+  scale_colour_viridis_d(alpha = 0.5) +
   theme_minimal()
 
 
@@ -187,7 +192,7 @@ pcol_clus <- plot_grid(prow_clus_female,
 pcol_clus
 
 # Write data 
-ggsave('results/pcas.png', 
+ggsave('results/05_pca_plots.png', 
        pcol_clus, 
        width = 15, 
        height = 8, 
