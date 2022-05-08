@@ -8,6 +8,12 @@ output:
     logo: Rthritis001.png
 ---
 
+<style type="text/css">
+slides > slide:not(.nobackground):after {
+  content: '';
+}
+</style>
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE,
@@ -74,7 +80,7 @@ all_logfold %>%
        fill = "Differential expression",
        color = "Adjusted p < 0.05",
        title = "6. Results 3: Differential expression analysis") +
-  lims(y = c(-15,15)) +
+  lims(y = c(-10,10)) +
   theme(legend.position = "bottom",
         axis.text.x=element_blank(),
         panel.grid.major=element_blank(),
