@@ -91,15 +91,15 @@ log_plot_diff <- log_plot +
 
 # List of differentially expressed genes:
 write_tsv(x = diff_expr_genes,
-          file = "data/08_diff_expr_genes.tsv")
+          file = "data/06_diff_expr_genes.tsv")
 # Save plot
 ggsave(plot = log_plot, 
-       filename = "results/08_diff_expr.png", 
+       filename = "results/06_diff_expr.png", 
        width = 10, 
        height = 6, 
        units = "in")
 ggsave(plot = log_plot_diff, 
-       filename = "results/08_diff_expr_marked.png", 
+       filename = "results/06_diff_expr_marked.png", 
        width = 10, 
        height = 6, 
        units = "in")
