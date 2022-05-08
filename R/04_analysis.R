@@ -1,25 +1,10 @@
----
-title: "Demographics"
-output: html_document
-date: '2022-04-28'
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## R Markdown
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
-```{r}
 data8 <- read_tsv("/cloud/project/data/02_large_w_meta_clean.tsv")
 drug <- read_tsv("/cloud/project/data/02_treatment_w_meta_clean.tsv")
 
-    
+
 data8 %>% 
   ggplot(aes(age, fill=disease)) +
-    geom_histogram(colour="#000000") -> histogram
+  geom_histogram(colour="#000000") -> histogram
 
 data8 %>% 
   drop_na(age) %>% 
@@ -39,7 +24,7 @@ druggood <- drug %>%
   mutate(sex = case_when(sex == 'M' ~ 'Male')) %>%
   bind_rows(data8 %>% 
               select(1:4) 
-            )
+  )
 
 means <- druggood %>% 
   drop_na(age) %>% 
@@ -59,6 +44,7 @@ histogram <- druggood %>%
         axis.title.x.top = element_blank()) +
   geom_bar(alpha=0.4)
 
+
 sex_distribution_plot <- histogram +
   facet_wrap(vars(sex)) +
   scale_x_discrete(guide = guide_axis(angle = 90))+
@@ -67,8 +53,8 @@ sex_distribution_plot <- histogram +
   theme_minimal()
 
 age_distribution_plot <- density + 
-   geom_vline(data = means, aes(xintercept=Mean), size=0.5, color="red") +
-   geom_label(data=means, size=2.5, 
+  geom_vline(data = means, aes(xintercept=Mean), size=0.5, color="red") +
+  geom_label(data=means, size=2.5, 
              aes(x=Mean, y=0.015, label=paste0(Mean)),
              show.legend = FALSE) +
   ylab("Density")+
@@ -103,6 +89,3 @@ ggsave('/cloud/project/results/04_age_distribution.png',
        width = 8, 
        height = 8, 
        bg = "transparent")
-```
-
-
