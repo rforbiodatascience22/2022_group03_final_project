@@ -8,6 +8,6 @@ source(file = "R/06_analysis_V_diff_expr.R")
 source(file = "R/07_analysis_javi.R")
 source(file = "R/08_analysis_iii_boxpl_nrml.R")
 source(file = "R/09_analysis_model.R")
-#source(file = "R/11-analysis_log_reg.R")
+#source(file = "R/11-analysis_log_reg.R") # Optional and VERY slow.
 source(file = "R/14_analysis_iv_eda.R")
 rmarkdown::render("./doc/slides.Rmd", "ioslides_presentation")
