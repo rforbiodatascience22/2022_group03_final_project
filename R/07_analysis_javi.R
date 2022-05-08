@@ -76,7 +76,7 @@ heatmap_over <- heatmap_table %>%
 heatmap_over
 heatmap_under
 # Write data --------------------------------------------------------------
-ggsave("heatmap_under.png",
+ggsave("07_heatmap_under.png",
        heatmap_under,
        dpi = 300,
        width = 8, 
@@ -84,7 +84,7 @@ ggsave("heatmap_under.png",
        units = "in",
        path = "/cloud/project/results")
 
-ggsave("heatmap_over.png",
+ggsave("07_heatmap_over.png",
        heatmap_over,
        dpi = 300,
        width = 8, 
