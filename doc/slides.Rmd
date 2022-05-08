@@ -62,7 +62,7 @@ knitr::include_graphics('/cloud/project/results/04_sex_distribution.png')
 ```
 
 
-## 5. Results 2: PCA and clusters (Klara) 
+## 5. Results 2: PCA and k-means clustering
 
 ```{r, out.width='900px'}
 knitr::include_graphics('/cloud/project/results/pcas.png')
@@ -84,8 +84,9 @@ knitr::include_graphics('/cloud/project/results/08_diff_expr_marked.png')
 
 ## 7. Results 4: Heatmaps (Javi)
 
-```{r}
-knitr::include_graphics('/cloud/project/results/')
+```{r, out.width='460px'}
+knitr::include_graphics('/cloud/project/results/07_heatmap_over.png')
+knitr::include_graphics('/cloud/project/results/07_heatmap_under.png')
 ```
 
 ## 8. Results 5: Box plots (Javi)
