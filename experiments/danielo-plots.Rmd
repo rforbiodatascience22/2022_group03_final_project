@@ -59,6 +59,7 @@ histogram <- druggood %>%
         axis.title.x.top = element_blank()) +
   geom_bar(alpha=0.4)
 
+
 sex_distribution_plot <- histogram +
   facet_wrap(vars(sex)) +
   scale_x_discrete(guide = guide_axis(angle = 90))+

@@ -37,9 +37,11 @@ library("tidyverse")
 
 ## 1. Introduction
 
-Rheumatism - biomechanics
+Rheumatism - biomechanical disorder(s)
 
 12% of Danish population
+
+Good treatment options, but little insight on mechanism of action
 
 
 ## 2. Materials and methods
@@ -50,8 +52,10 @@ Rheumatism - biomechanics
 knitr::include_graphics('/cloud/project/doc/Article_flow.png')
 ```
 
-## 3. Data wrangling and tidying
-
+## 3. Data tidying
+A column per variable
+A row per observation
+A cell per value
 
 ## 4. Results 1: Exploration of Metadata (Klara)
 ```{r,out.width='450px'}
