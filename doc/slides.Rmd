@@ -37,8 +37,8 @@ summary(cars)
 
 ## 4. Results 1: Exploration of Metadata (Klara)
 
-```{r}
-knitr::include_graphics('../pcas_final.png')
+```{r, out.width='750px'}
+knitr::include_graphics('../results/age_distr_plot.png')
 ```
 
 ## 5. Results 2: PCA and clusters (Klara) 
