@@ -84,6 +84,8 @@ age_distribution_plot <- density +
 
 age_distribution_plot
 
+ggsave("age.png", plot = last_plot(), device = NULL, path = '/cloud/project/results')
+
 
 ```
 
