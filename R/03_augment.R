@@ -43,6 +43,7 @@ calc_logfold <- function(data) {
   DESeq2::results(dds) %>% as_tibble(rownames = "gene")
   }
 
+Sys.setenv("VROOM_CONNECTION_SIZE" = 2*131072)
 
 # Load data ---------------------------------------------------------------
 combined_dataset <- read_tsv(file = "data/02_combined.tsv")
