@@ -5,7 +5,7 @@ date: '2022-05-06'
 output: 
   ioslides_presentation:
     widescreen: true
-    logo: Rthritis001.png
+    logo: Rthritis_logo.png
 ---
 
 <style type="text/css">
@@ -37,37 +37,35 @@ library("tidyverse")
 
 ## 1. Introduction
 
-Rheumatism - biomechanics
+Rheumatism - biomechanical disorder(s)
 
 12% of Danish population
 
+Good treatment options, but little insight on mechanism of action
 
 ## 2. Materials and methods
 
-```{r, out.width='750px'}
-knitr::include_graphics('/cloud/project/doc/Article1.png')
+
+
+```{r, out.width='1000px'}
+knitr::include_graphics('/cloud/project/doc/Article_flow.png')
 ```
 
-```{r, out.width='750px'}
-knitr::include_graphics('/cloud/project/doc/Article2.png')
-```
-
-## 3. Data wrangling and tidying
-
-```{r cars, echo = TRUE}
-summary(cars)
-```
+## 3. Data tidying
+A column per variable
+A row per observation
+A cell per value
 
 ## 4. Results 1: Exploration of Metadata (Klara)
 ```{r,out.width='450px'}
-knitr::include_graphics('/cloud/project/results/sex.png')
+knitr::include_graphics('/cloud/project/results/04_age_distribution.png')
 ```
 ```{r, out.width='500px'}
-knitr::include_graphics('/cloud/project/results/age.png')
+knitr::include_graphics('/cloud/project/results/04_sex_distribution.png')
 ```
 
 
-## 5. Results 2: PCA and clusters (Klara) 
+## 5. Results 2: PCA and k-means clustering
 
 ```{r, out.width='900px'}
 knitr::include_graphics('/cloud/project/results/pcas.png')
@@ -84,13 +82,14 @@ knitr::include_graphics('../results/08_diff_expr.png')
 ## 6. Results 3: Differential expression analysis {#log2}
 
 ```{r, out.width="950px"}
-knitr::include_graphics('../results/08_diff_expr_marked.png')
+knitr::include_graphics('/cloud/project/results/08_diff_expr_marked.png')
 ```
 
 ## 7. Results 4: Heatmaps (Javi)
 
-```{r}
-plot(pressure)
+```{r, out.width='460px'}
+knitr::include_graphics('/cloud/project/results/07_heatmap_over.png')
+knitr::include_graphics('/cloud/project/results/07_heatmap_under.png')
 ```
 
 ## 8. Results 5: Box plots (Javi)
