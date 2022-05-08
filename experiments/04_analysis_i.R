@@ -11,6 +11,7 @@ large_w_meta <- read_tsv(file = "./data/02_large_w_meta_clean.tsv")
 treatment_w_meta <- read_tsv(file = "./data/02_treatment_w_meta_clean.tsv")
 
 
+
 # Wrangle data ------------------------------------------------------------
 long_model <- large_w_meta %>% 
   select(!c(sex, age, acc_num)) %>% 
