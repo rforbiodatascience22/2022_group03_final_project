@@ -1,11 +1,8 @@
+# Loading datasets
 data8 <- read_tsv("/cloud/project/data/02_large_w_meta_clean.tsv")
 drug <- read_tsv("/cloud/project/data/02_treatment_w_meta_clean.tsv")
 
-
-data8 %>% 
-  ggplot(aes(age, fill=disease)) +
-  geom_histogram(colour="#000000") -> histogram
-
+# Data wrangling
 data8 %>% 
   drop_na(age) %>% 
   filter(disease=="Normal") %>% 
@@ -25,12 +22,14 @@ druggood <- drug %>%
               select(1:4) 
   )
 
+# New tibble with age means
 means <- druggood %>% 
   drop_na(age) %>% 
   group_by(disease) %>% 
   summarize(Mean = round(mean(age, na.rm=TRUE))) %>% 
   as_tibble()
 
+# Plots
 density <- druggood %>% 
   drop_na(age) %>% 
   ggplot(aes(age, fill=disease)) +
@@ -68,6 +67,7 @@ age_distribution_plot <- density +
 age_distribution_plot
 sex_distribution_plot
 
+# Saving plots
 ggsave('/cloud/project/results/04_age_distribution.png', 
        age_distribution_plot, 
        width = 8, 
