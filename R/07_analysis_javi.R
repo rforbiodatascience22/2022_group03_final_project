@@ -78,16 +78,18 @@ heatmap_under
 # Write data --------------------------------------------------------------
 ggsave("07_heatmap_under.png",
        heatmap_under,
+       bg = "transparent",
        dpi = 300,
-       width = 8, 
+       width = 10, 
        height = 10,
        units = "in",
        path = "/cloud/project/results")
 
 ggsave("07_heatmap_over.png",
        heatmap_over,
+       bg = "transparent",
        dpi = 300,
-       width = 8, 
+       width = 10, 
        height = 10,
        units = "in",
        path = "/cloud/project/results")

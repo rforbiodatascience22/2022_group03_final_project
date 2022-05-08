@@ -128,8 +128,10 @@ drug_sele_genes <-
 # Write data --------------------------------------------------------------
 ggsave("08_boxp_sele_genes_allcond.png",
        plot = allcond_sele_genes,
+       bg = "transparent",
        path = "/cloud/project/results")
 
 ggsave("08_bxpl_sele_genes_drug.png",
        plot = drug_sele_genes,
+       bg = "transparent",
        path = "/cloud/project/results")
