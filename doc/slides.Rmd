@@ -29,7 +29,8 @@ library("tidyverse")
 ## 1. Introduction
 
 Rheumatism - biomechanics
-12 % of Danish population
+
+12% of Danish population
 
 
 ## 2. Materials and methods
@@ -48,10 +49,13 @@ summary(cars)
 ```
 
 ## 4. Results 1: Exploration of Metadata (Klara)
-
-```{r, out.width='750px'}
+```{r,out.width='450px'}
+knitr::include_graphics('/cloud/project/results/sex.png')
+```
+```{r, out.width='500px'}
 knitr::include_graphics('/cloud/project/results/age.png')
 ```
+
 
 ## 5. Results 2: PCA and clusters (Klara) 
 
