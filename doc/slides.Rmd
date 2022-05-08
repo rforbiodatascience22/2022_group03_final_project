@@ -99,7 +99,7 @@ plot(pressure)
 ## 9. Results 6: Model (Angeliki)
 
 ```{r}
-plot(pressure)
+knitr::include_graphics('../results/final_model_LXN_curve.png')
 ```
 
 ## 10. Discussion + conclusion (Angeliki)

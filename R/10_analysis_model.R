@@ -108,11 +108,19 @@ LXN_curve <- train_data %>%
   labs(
     title = "Simple model to distinguish early RA from normal condition",
     subtitle = "Based on RNA-seq data for the gene LXN (CXCL8)",
-    caption = "Input data were normalized reads."
-  )
+    caption = "Input data are normalized reads."
+  ) +
+  theme(axis.text = element_text(size = 8),
+        axis.title = element_text(size = 10),
+        plot.title = element_text(size = 14),
+        plot.subtitle = element_text(size = 10),
+        legend.text = element_text(size = 10))   
 
 
 # Write data --------------------------------------------------------------
 ggsave("final_model_LXN_curve.png",
-       LXN_curve,
+       LXN_curve,       
+       width = 7, 
+       height = 3, 
+       bg = "transparent",
        path = "/cloud/project/results")
