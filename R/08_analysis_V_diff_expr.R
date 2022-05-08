@@ -39,6 +39,8 @@ diff_expr_genes <- over_expr %>% bind_rows(under_expr)
 
 # Visualise data ----------------------------------------------------------
 
+# Plot logfold change only:
+
 log_plot <- all_logfold %>% 
   left_join(diff_expr_genes, by = "gene") %>%
   mutate(differentiation = fct_relevel(differentiation, 
@@ -48,23 +50,40 @@ log_plot <- all_logfold %>%
                                        ))) %>% 
   ggplot(mapping = aes(x = gene, 
                        y = log2FoldChange,
-                       color = factor(significant),
-                       fill = factor(diff_expr))) + 
-  geom_point(alpha = 0.4, shape = 21) +
-  scale_color_manual(values = c("black", "dodgerblue3"), na.translate = F) +
-  scale_fill_manual(values = c("under" = "brown1", "over" = "chartreuse"), na.translate = F) +
+                       color = factor(significant))) + 
+  geom_point(alpha = 0.4, 
+             shape = 21) +
+  scale_color_manual(values = c("black", 
+                                "dodgerblue3"), 
+                     na.translate = F) +
+  scale_fill_manual(values = c("under" = "brown1",
+                               "over" = "chartreuse"),
+                    labels = c("Under","Over"),
+                    na.translate = F) +
   theme_minimal(base_family = "Avenir",
                 base_size = 10) +
   labs(x = "Gene", 
        y = "log2 Fold Change",
-       fill = "Differential expression",
+       fill = "Differential Expression",
        color = "Adjusted p < 0.05") +
-  lims(y = c(-15,15)) +
+  lims(y = c(-8,8)) +
   theme(legend.position = "bottom",
         axis.text.x=element_blank(),
         panel.grid.major=element_blank(),
         panel.grid.minor=element_blank()) +
   facet_grid(rows = vars(differentiation))
+
+# Plot logfold change with marked genes:
+
+log_plot_diff <- log_plot + 
+  aes(x = gene,
+      y = log2FoldChange,
+      color = factor(significant),
+      fill = factor(diff_expr)) +
+  labs(x = "Gene", 
+       y = "log2 Fold Change",
+       fill = "Differential Expression",
+       color = "Adjusted p < 0.05")
 
 
 # Write data --------------------------------------------------------------
@@ -73,4 +92,13 @@ log_plot <- all_logfold %>%
 write_tsv(x = diff_expr_genes,
           file = "data/08_diff_expr_genes.tsv")
 # Save plot
-ggsave(plot = log_plot, filename = "results/diff_expr.png", width = 8, height = 6, units = "in")
+ggsave(plot = log_plot, 
+       filename = "results/diff_expr.png", 
+       width = 10, 
+       height = 6, 
+       units = "in")
+ggsave(plot = log_plot_diff, 
+       filename = "results/diff_expr_marked.png", 
+       width = 10, 
+       height = 6, 
+       units = "in")
