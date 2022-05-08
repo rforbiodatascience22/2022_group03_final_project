@@ -37,6 +37,7 @@ under_expr <- all_logfold %>%
 
 diff_expr_genes <- over_expr %>% bind_rows(under_expr)
 
+
 # Visualise data ----------------------------------------------------------
 
 # Plot logfold change only:
@@ -93,12 +94,12 @@ write_tsv(x = diff_expr_genes,
           file = "data/08_diff_expr_genes.tsv")
 # Save plot
 ggsave(plot = log_plot, 
-       filename = "results/diff_expr.png", 
+       filename = "results/08_diff_expr.png", 
        width = 10, 
        height = 6, 
        units = "in")
 ggsave(plot = log_plot_diff, 
-       filename = "results/diff_expr_marked.png", 
+       filename = "results/08_diff_expr_marked.png", 
        width = 10, 
        height = 6, 
        units = "in")

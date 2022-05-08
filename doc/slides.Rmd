@@ -77,14 +77,14 @@ knitr::include_graphics('/cloud/project/results/pcas.png')
 
 
 ```{r, out.width="950px"}
-knitr::include_graphics('../results/diff_expr.png')
+knitr::include_graphics('../results/08_diff_expr.png')
 
 ```
 
 ## 6. Results 3: Differential expression analysis {#log2}
 
 ```{r, out.width="950px"}
-knitr::include_graphics('../results/diff_expr_marked.png')
+knitr::include_graphics('../results/08_diff_expr_marked.png')
 ```
 
 ## 7. Results 4: Heatmaps (Javi)
