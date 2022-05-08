@@ -104,7 +104,7 @@ LXN_curve <- train_data %>%
 
 
 # Write data --------------------------------------------------------------
-ggsave("final_model_LXN_curve.png",
+ggsave("09_model_LXN_curve.png",
        LXN_curve,       
        width = 7, 
        height = 3, 
