@@ -58,7 +58,18 @@ allcond_sele_genes <-
   geom_jitter(aes(colour = condition),
               size = 0.7
   )+
-  facet_wrap(vars(gene), scales = 'free_y') +
+  facet_wrap(~factor(gene, levels =c("CD3D",
+                                     "MS4A1",
+                                     "CTLA4",
+                                     "CD19",
+                                     "MMP13",
+                                     "CLEC12A",
+                                     "AURKA",
+                                     "IL10",
+                                     "CLEC2B",
+                                     "CD58")
+                     ),
+             scales = 'free_y', nrow = 2) +
   theme_bw() +
   theme(panel.border = element_blank(),
         panel.grid.major = element_blank(),
@@ -85,7 +96,19 @@ drug_sele_genes <-
   geom_jitter(aes(colour = condition),
               size = 0.7
   )+
-  facet_wrap(vars(gene), scales = 'free_y') +
+  facet_wrap(~factor(gene, levels =c("CD3D",
+                                     "MS4A1",
+                                     "CTLA4",
+                                     "CD19",
+                                     "MMP13",
+                                     "CLEC12A",
+                                     "AURKA",
+                                     "IL10",
+                                     "CLEC2B",
+                                     "CD58")
+                     ), 
+                     scales = 'free_y', 
+                     nrow = 2) +
   theme_bw() +
   theme(panel.border = element_blank(), 
         panel.grid.major = element_blank(),
