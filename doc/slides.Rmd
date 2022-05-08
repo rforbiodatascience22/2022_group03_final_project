@@ -37,15 +37,18 @@ library("tidyverse")
 
 ## 1. Introduction
 
+Rheumatism - biomechanics
+12 % of Danish population
 
-Why we wanted to look at arthritis, what we wanted to find out, how we were going to do it (in very broad terms), bla bla bla bla.
 
 ## 2. Materials and methods
 
 Explain the dataset and articles
 Explain the order we did things
-
-## 3. Tidy datasets
+```{r, out.width='750px'}
+knitr::include_graphics('../doc/Article1.png')
+```
+## 3. Data wrangling and tidying
 
 ```{r cars, echo = TRUE}
 summary(cars)
